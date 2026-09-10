@@ -32,7 +32,7 @@ form create_test_customers.
   lt_customers = value #(
     ( mandt = sy-mandt
       customer_id      = 'HQPARIS'
-      customer_name    = 'Decathlon HQ Paris'
+      customer_name    = 'Retail Group HQ Paris'
       customer_type    = 'B'
       city             = 'Paris'
       country          = 'FR'
@@ -142,10 +142,10 @@ endform.
 
 
 form assign_b2b_scenario.
-  " B2B Decathlon-style : HQPARIS sold-to avec multi Ship-to + Payer dédié
+  " B2B retail-group style : HQPARIS sold-to avec multi Ship-to + Payer dédié
 
   write: / ''.
-  write: / '=== B2B Scenario (HQPARIS Decathlon-style) ==='.
+  write: / '=== B2B Scenario (HQPARIS retail-group style) ==='.
 
   try.
       data(lv_counter) = zcl_ret_cust_partner=>assign_partner(

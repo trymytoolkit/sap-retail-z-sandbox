@@ -23,12 +23,12 @@ class lcl_seeder implementation.
     try.
         zcl_ret_generic_art=>create(
           iv_id          = 'GEN001'
-          iv_name        = 'Trail running shoes Quechua men'
+          iv_name        = 'Trail running shoes men'
           iv_type        = 'HARD'
           iv_base_uom    = 'PC'
           iv_description = 'Lightweight trail running footwear for men'
         ).
-        write: / |  GEN001 created (Trail running shoes Quechua men)|.
+        write: / |  GEN001 created (Trail running shoes men)|.
 
       catch zcx_ret_core.
         write: / |  GEN001 already exists or error - skipped|.

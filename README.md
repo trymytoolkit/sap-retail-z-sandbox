@@ -6,7 +6,7 @@
 
 ## Context
 
-Self-driven learning project by Romain Hecquet — retail professional (ex-Decathlon) transitioning to **SAP technico-functional consulting**. This repository materialises a step-by-step dive into SAP Retail through custom `Z` objects running on a local SAP ABAP Platform 1909 trial.
+Self-driven portfolio project by Romain Hecquet — freelance **SAP EWM / MM / SD technico-functional consultant** (6+ years of N3 support and configuration on high-volume retail logistics, including one of Europe's largest mechanised warehouses). This repository materialises a step-by-step dive into SAP Retail through custom `Z` objects running on a local SAP ABAP Platform 1909 trial — built to master the technical side of the modules I support functionally every day.
 
 The goal is twofold:
 
@@ -19,7 +19,7 @@ The goal is twofold:
 
 - ✅ **Complete Order-to-Cash cycle in custom Z**: Sales Order → Delivery → Invoice with status transitions (`Open` → `Delivered` → `Billed`)
 - ✅ **Pseudo-EWM warehouse module**: PO → Goods Receipt → auto-Putaway task → Pick → auto-Load task → Goods Issue, with zone-aware stock (RECV / STORAGE / STAGING / LOAD_DOCK)
-- ✅ **Partner Roles SAP-style (KNVP pattern)**: Sold-to / Ship-to / Bill-to / Payer with `partner_counter` for multi-Ship-to scenarios, smart fallback to sold-to, scenarios B2C + B2B Decathlon-style with HQ + 3 regional depots
+- ✅ **Partner Roles SAP-style (KNVP pattern)**: Sold-to / Ship-to / Bill-to / Payer with `partner_counter` for multi-Ship-to scenarios, smart fallback to sold-to, scenarios B2C + B2B retail-group style with HQ + 3 regional depots
 - ✅ **10 domain classes** that compose each other across modules (Sales, Procurement, Stock, Warehouse Tasks, Partner Functions)
 - ✅ **52 ABAP Unit tests green** — uncommon in the ABAP world, signals production-grade rigor
 - ✅ **Atomic transactions** with `COMMIT WORK` / `ROLLBACK WORK` — multi-table updates respect business invariants
@@ -350,7 +350,7 @@ The complete warehouse cycle in custom Z, mirroring real SAP EWM patterns. The s
 - Triple validation in `assign_partner`: sold-to exists + partner customer exists + partner function valid (otherwise `zcx_ret_core` raised)
 - Program `ZRET_R_SEED_PARTNERS` with two scenarios:
   - **B2C** (DUPONT01): no explicit assignment, all functions resolve to DUPONT01 itself via fallback
-  - **B2B Decathlon-style** (HQPARIS): 1 sold-to, 3 ship-to (DEP_LYON / DEP_MAR / DEP_LIL with auto counters 001/002/003), bill-to = HQPARIS, payer = BNPBANK
+  - **B2B retail-group style** (HQPARIS): 1 sold-to, 3 ship-to (DEP_LYON / DEP_MAR / DEP_LIL with auto counters 001/002/003), bill-to = HQPARIS, payer = BNPBANK
 - 6 ABAP Unit tests covering: seed idempotency, assignment happy path, validation refusal of unknown customer, smart fallback to sold-to, multi-Ship-to counter increment, deactivate-then-fallback end-to-end
 - Pattern faithful to **SAP standard table KNVP** (simplified: skipped Sales Org / Distribution Channel / Division dimensions for portfolio scope)
 
@@ -458,11 +458,11 @@ The complete warehouse cycle in custom Z, mirroring real SAP EWM patterns. The s
 
 ### Partner Roles scenarios (seeded by `ZRET_R_SEED_PARTNERS`)
 
-**6 additional customers to demonstrate B2B Decathlon-style and B2C patterns:**
+**6 additional customers to demonstrate B2B retail-group and B2C patterns:**
 
 | ID       | Name                  | Type | City      | Role in scenarios |
 |----------|-----------------------|------|-----------|-------------------|
-| HQPARIS  | Decathlon HQ Paris    | B2B  | Paris     | Sold-to + Bill-to of B2B chain |
+| HQPARIS  | Retail Group HQ Paris | B2B  | Paris     | Sold-to + Bill-to of B2B chain |
 | DEP_LYON | Depot Lyon            | B2B  | Lyon      | Ship-to #1 (counter 001)       |
 | DEP_MAR  | Depot Marseille       | B2B  | Marseille | Ship-to #2 (counter 002)       |
 | DEP_LIL  | Depot Lille           | B2B  | Lille     | Ship-to #3 (counter 003)       |
@@ -544,7 +544,7 @@ src/
 1. Install **abapGit standalone** in your system (one-time)
 2. Clone this repo via abapGit:
    ```
-   https://github.com/Koraeos/sap-retail-z-sandbox.git
+   https://github.com/trymytoolkit/sap-retail-z-sandbox.git
    ```
 3. Pull into the `ZRET_ROOT` package on your system
 4. Activate all objects (Ctrl+F3 on each class / table / report)
@@ -586,7 +586,7 @@ src/
 - ✅ **Phase 6** — RAP / Fiori Elements pipeline (List Report functional, Object Page limitation on 1909 trial documented)
 - ✅ **Phase 3.5** — SD Partner Roles (Sold-to / Ship-to / Bill-to / Payer with KNVP pattern + smart fallback)
 - ⏳ **Phase 4** — Z purchase cycle extension (vendor invoice + 3-way match)
-- ⏳ **Phase 2.5** — Article hierarchy (super-model → model → variant, Decathlon-style)
+- ⏳ **Phase 2.5** — Article hierarchy (super-model → model → variant, sporting-goods retail style)
 - ⏳ **Phase 7** — Production-readiness polish (additional tests, missing list programs, complete update methods)
 
 ---
@@ -610,7 +610,8 @@ src/
 
 **Romain Hecquet**
 
-- GitHub: [@Koraeos](https://github.com/Koraeos)
+- GitHub: [@trymytoolkit](https://github.com/trymytoolkit)
 - Email: hecquet.rom@gmail.com
 
-Career transition from retail operations (ex-Decathlon) to SAP technico-functional consulting, with a focus on **SAP Retail / S/4HANA Retail**.
+Freelance SAP EWM / MM / SD consultant based in Lille, France — fully remote. Background: 8 years of warehouse and transport operations, then 6+ years of SAP technico-functional consulting (EWM N3 support on a large mechanised warehouse, EWM store rollout, MM/SD expert support on ~1M article references). Also the author of [MyToolKit](https://trymytoolkit.com), a Windows productivity tool for SAP consultants.
+- LinkedIn: [romain-hecquet](https://www.linkedin.com/in/romain-hecquet-47638530b)
