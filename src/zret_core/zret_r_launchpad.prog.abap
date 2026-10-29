@@ -6,6 +6,7 @@ types:
     category    type c length 20,
     code        type c length 30,
     code_type   type c length 1,    " 'P' = program, 'T' = transaction
+    sel_screen  type abap_bool,     " abap_true = SUBMIT VIA SELECTION-SCREEN (program has a selection screen)
     description type c length 60,
     t_color     type lvc_t_scol,
   end of ty_action,
@@ -29,8 +30,14 @@ class lcl_handler implementation.
     endif.
 
     case <fs_action>-code_type.
-      when 'P'.   " Program -> SUBMIT and return
-        submit (<fs_action>-code) and return.
+      when 'P'.   " Program
+        if <fs_action>-sel_screen = abap_true.
+          " Programs WITH a selection screen -> show it so the user can enter values
+          submit (<fs_action>-code) via selection-screen and return.
+        else.
+          " Direct-execution programs (seeds / param-less lists) -> run straight away
+          submit (<fs_action>-code) and return.
+        endif.
       when 'T'.   " Transaction -> CALL TRANSACTION
         call transaction <fs_action>-code.
       when others.
@@ -48,39 +55,39 @@ start-of-selection.
 form build_actions.
 
   " === MASTER DATA SETUP ===
-  append value #( step = '010' category = '01-Master Setup'  code = 'ZRET_R_ARTICLE_CREATE'   code_type = 'P' description = 'Create article master records' ) to gt_actions.
-  append value #( step = '011' category = '01-Master Setup'  code = 'ZRET_R_CUSTOMER_CREATE'  code_type = 'P' description = 'Create customer master records' ) to gt_actions.
-  append value #( step = '012' category = '01-Master Setup'  code = 'ZRET_R_SITE_CREATE'      code_type = 'P' description = 'Create site master records' ) to gt_actions.
+  append value #( step = '010' category = '01-Master Setup'  code = 'ZRET_R_ARTICLE_CREATE'   code_type = 'P' sel_screen = abap_true description = 'Create article master records' ) to gt_actions.
+  append value #( step = '011' category = '01-Master Setup'  code = 'ZRET_R_CUSTOMER_CREATE'  code_type = 'P' sel_screen = abap_true description = 'Create customer master records' ) to gt_actions.
+  append value #( step = '012' category = '01-Master Setup'  code = 'ZRET_R_SITE_CREATE'      code_type = 'P' sel_screen = abap_true description = 'Create site master records' ) to gt_actions.
   append value #( step = '013' category = '01-Master Setup'  code = 'ZRET_R_SEED_SUPPLIERS'   code_type = 'P' description = 'Seed 3 sample suppliers' ) to gt_actions.
   append value #( step = '014' category = '01-Master Setup'  code = 'ZRET_R_SEED_WHSE'        code_type = 'P' description = 'Seed warehouse zones + initial stock' ) to gt_actions.
   append value #( step = '015' category = '01-Master Setup'  code = 'ZRET_R_SEED_GENERIC'     code_type = 'P' description = 'Seed Generic Articles + link variants' ) to gt_actions.
   append value #( step = '016' category = '01-Master Setup'  code = 'ZRET_R_SEED_PARTNERS'    code_type = 'P' description = 'Seed Partner Roles B2B + B2C scenarios' ) to gt_actions.
 
   " === MASTER DATA - LISTS / TRANSACTIONS ===
-  append value #( step = '020' category = '02-Master Lists'  code = 'ZRET_R_ARTICLE_LIST'     code_type = 'P' description = 'Article master list (ALV with row colors)' ) to gt_actions.
+  append value #( step = '020' category = '02-Master Lists'  code = 'ZRET_R_ARTICLE_LIST'     code_type = 'P' sel_screen = abap_true description = 'Article master list (ALV with row colors)' ) to gt_actions.
   append value #( step = '021' category = '02-Master Lists'  code = 'ZRET_R_GEN_ART_LIST'     code_type = 'P' description = 'Generic Articles + variant count + drill-down' ) to gt_actions.
   append value #( step = '022' category = '02-Master Lists'  code = 'ZRET_R_CUST_PART_LIST'   code_type = 'P' description = 'Customer x Partner Functions matrix' ) to gt_actions.
   append value #( step = '023' category = '02-Master Lists'  code = 'ZGENART'                 code_type = 'T' description = 'Z transaction (dynpro) Create Generic Article' ) to gt_actions.
 
   " === PROCUREMENT (Inbound side) ===
   append value #( step = '030' category = '03-Procurement'   code = 'ZRET_R_PO_DEMO'          code_type = 'P' description = 'Create PO + post Goods Receipt (auto-Putaway)' ) to gt_actions.
-  append value #( step = '031' category = '03-Procurement'   code = 'ZRET_R_PO_LIST'          code_type = 'P' description = 'PO list (ALV with item drill-down)' ) to gt_actions.
+  append value #( step = '031' category = '03-Procurement'   code = 'ZRET_R_PO_LIST'          code_type = 'P' sel_screen = abap_true description = 'PO list (ALV with item drill-down)' ) to gt_actions.
   append value #( step = '032' category = '03-Procurement'   code = 'ZRET_R_VINV_DEMO'        code_type = 'P' description = 'Vendor Invoice 3-way match demo' ) to gt_actions.
-  append value #( step = '033' category = '03-Procurement'   code = 'ZRET_R_VINV_LIST'        code_type = 'P' description = 'Vendor Invoice list (status colors)' ) to gt_actions.
+  append value #( step = '033' category = '03-Procurement'   code = 'ZRET_R_VINV_LIST'        code_type = 'P' sel_screen = abap_true description = 'Vendor Invoice list (status colors)' ) to gt_actions.
 
   " === WAREHOUSE ===
-  append value #( step = '040' category = '04-Warehouse'     code = 'ZRET_R_WH_TASK_LIST'     code_type = 'P' description = 'Warehouse tasks list (Putaway / Pick / Load)' ) to gt_actions.
-  append value #( step = '041' category = '04-Warehouse'     code = 'ZRET_R_WH_TASK_CONFIRM'  code_type = 'P' description = 'Confirm a warehouse task' ) to gt_actions.
-  append value #( step = '042' category = '04-Warehouse'     code = 'ZRET_R_OUTBOUND_DEMO'    code_type = 'P' description = 'Full Pick -> Load -> Goods Issue chain' ) to gt_actions.
+  append value #( step = '040' category = '04-Warehouse'     code = 'ZRET_R_WH_TASK_LIST'     code_type = 'P' sel_screen = abap_true description = 'Warehouse tasks list (Putaway / Pick / Load)' ) to gt_actions.
+  append value #( step = '041' category = '04-Warehouse'     code = 'ZRET_R_WH_TASK_CONFIRM'  code_type = 'P' sel_screen = abap_true description = 'Confirm a warehouse task' ) to gt_actions.
+  append value #( step = '042' category = '04-Warehouse'     code = 'ZRET_R_OUTBOUND_DEMO'    code_type = 'P' sel_screen = abap_true description = 'Full Pick -> Load -> Goods Issue chain' ) to gt_actions.
   append value #( step = '043' category = '04-Warehouse'     code = 'ZRET_R_STOCK_DASH'       code_type = 'P' description = 'Stock by article x site x zone (subtotals)' ) to gt_actions.
 
   " === SALES (Outbound side) ===
-  append value #( step = '050' category = '05-Sales'         code = 'ZRET_R_SO_CREATE'        code_type = 'P' description = 'Create Sales Order' ) to gt_actions.
-  append value #( step = '051' category = '05-Sales'         code = 'ZRET_R_SO_LIST'          code_type = 'P' description = 'Sales Order list (status colors + items popup)' ) to gt_actions.
-  append value #( step = '052' category = '05-Sales'         code = 'ZRET_R_DELIV_CREATE'     code_type = 'P' description = 'Create Delivery from SO (transitions SO to D)' ) to gt_actions.
-  append value #( step = '053' category = '05-Sales'         code = 'ZRET_R_DELIV_LIST'       code_type = 'P' description = 'Delivery list' ) to gt_actions.
-  append value #( step = '054' category = '05-Sales'         code = 'ZRET_R_INV_CREATE'       code_type = 'P' description = 'Create customer Invoice from Delivery' ) to gt_actions.
-  append value #( step = '055' category = '05-Sales'         code = 'ZRET_R_INV_LIST'         code_type = 'P' description = 'Customer invoice list' ) to gt_actions.
+  append value #( step = '050' category = '05-Sales'         code = 'ZRET_R_SO_CREATE'        code_type = 'P' sel_screen = abap_true description = 'Create Sales Order' ) to gt_actions.
+  append value #( step = '051' category = '05-Sales'         code = 'ZRET_R_SO_LIST'          code_type = 'P' sel_screen = abap_true description = 'Sales Order list (status colors + items popup)' ) to gt_actions.
+  append value #( step = '052' category = '05-Sales'         code = 'ZRET_R_DELIV_CREATE'     code_type = 'P' sel_screen = abap_true description = 'Create Delivery from SO (transitions SO to D)' ) to gt_actions.
+  append value #( step = '053' category = '05-Sales'         code = 'ZRET_R_DELIV_LIST'       code_type = 'P' sel_screen = abap_true description = 'Delivery list' ) to gt_actions.
+  append value #( step = '054' category = '05-Sales'         code = 'ZRET_R_INV_CREATE'       code_type = 'P' sel_screen = abap_true description = 'Create customer Invoice from Delivery' ) to gt_actions.
+  append value #( step = '055' category = '05-Sales'         code = 'ZRET_R_INV_LIST'         code_type = 'P' sel_screen = abap_true description = 'Customer invoice list' ) to gt_actions.
 
   " --- Color rows by category for visual readability ---
   loop at gt_actions assigning field-symbol(<fs>).
@@ -138,6 +145,13 @@ form display_launchpad.
         catch cx_salv_not_found.
       endtry.
 
+      " Hide sel_screen column (technical only)
+      try.
+          data(lo_col_sel) = lo_columns->get_column( 'SEL_SCREEN' ).
+          lo_col_sel->set_technical( abap_true ).
+        catch cx_salv_not_found.
+      endtry.
+
       " Hotspot on CODE column
       try.
           data(lo_col_code) = lo_columns->get_column( 'CODE' ).
@@ -151,7 +165,7 @@ form display_launchpad.
           lo_columns->get_column( 'STEP' )->set_short_text( 'Step' ).
           lo_columns->get_column( 'CATEGORY' )->set_short_text( 'Category' ).
           lo_columns->get_column( 'CODE' )->set_short_text( 'Code' ).
-lo_columns->get_column( 'CODE' )->set_long_text( 'Code (click to launch)' ).
+          lo_columns->get_column( 'CODE' )->set_long_text( 'Code (click to launch)' ).
           lo_columns->get_column( 'DESCRIPTION' )->set_short_text( 'Action' ).
           lo_columns->get_column( 'DESCRIPTION' )->set_long_text( 'Description' ).
         catch cx_salv_not_found.
