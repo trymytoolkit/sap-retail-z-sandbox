@@ -124,7 +124,8 @@ FORM create_grid.
       i_parent = go_cont.
   CALL FUNCTION 'LVC_FIELDCATALOG_MERGE'
     EXPORTING
-      i_structure_name = 'ZRET_S_PO_ITEM_ALV'
+      i_structure_name   = 'ZRET_S_PO_ITEM_ALV'
+      i_bypassing_buffer = 'X'
     CHANGING
       ct_fieldcat      = gt_fcat.
   PERFORM set_fcat_edit.
@@ -160,6 +161,9 @@ FORM set_fcat_edit.
       WHEN 'ARTICLE_NAME'.  <ls_fcat>-coltext = 'Désignation'(c04).
       WHEN 'QUANTITY'.      <ls_fcat>-coltext = 'Quantité'(c05). <ls_fcat>-edit = gv_edit.
       WHEN 'BASE_UOM'.      <ls_fcat>-coltext = 'Unité'(c06).
+        " Unité brute (les tables semées contiennent 'PC' en interne) :
+        " pas d'exit de conversion, sinon ***** et message système à chaque PBO
+        CLEAR: <ls_fcat>-convexit, <ls_fcat>-ref_table, <ls_fcat>-ref_field.
       WHEN 'UNIT_PRICE'.    <ls_fcat>-coltext = 'Prix unitaire'(c07). <ls_fcat>-edit = gv_edit.
       WHEN 'LINE_AMOUNT'.   <ls_fcat>-coltext = 'Montant'(c08).
       WHEN 'DELIVERED_QTY'. <ls_fcat>-coltext = 'Livré'(c09).
