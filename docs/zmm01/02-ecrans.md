@@ -81,3 +81,5 @@ Identifiants que verra MyToolKit (à confirmer avec « Voir les éléments de l'
 - cellule variante ligne 1, colonne VARIANT_ID : `wnd[0]/usr/tabsTS_MAIN/tabpTAB3/ssubSUB_MAIN:SAPMZRET_ART:0230/tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-VARIANT_ID[0,0]` (le suffixe [colonne,ligne] est ajouté par SAP GUI).
 
 > Note abapGit : dans l'en-tête RPY_DYHEAD, un écran normal porte `TYPE N` et un **sous-écran porte `TYPE I`** (pas `S`). Avec `S`, abapGit crée l'objet sans erreur visible mais le dynpro n'est jamais généré (DYNPRO_NOT_FOUND à l'exécution).
+
+> Unité de base : valeur interne 'ST' (affichée PC en anglais via l'exit de conversion CUNIT). 'PC' en interne n'existe pas et bloque la saisie (Unit *** is not created).

@@ -68,7 +68,7 @@ MODULE check_0210 INPUT.
     MESSAGE 'Choisissez un type d''article'(e03) TYPE 'E'.
   ENDIF.
   IF zret_s_art-base_uom IS INITIAL.
-    zret_s_art-base_uom = 'PC'.
+    zret_s_art-base_uom = 'ST'.
   ENDIF.
 ENDMODULE.
 

@@ -16,7 +16,7 @@ FORM load_article USING iv_id TYPE zret_t_article-article_id.
     gv_exists = abap_false.
     CLEAR zret_s_art.
     zret_s_art-article_id = iv_id.
-    zret_s_art-base_uom   = 'PC'.
+    zret_s_art-base_uom   = 'ST'.
     zret_s_art-currency   = 'EUR'.
     zret_s_art-active_flag = 'X'.
   ENDIF.
