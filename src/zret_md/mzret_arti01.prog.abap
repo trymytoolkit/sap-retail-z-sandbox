@@ -61,6 +61,7 @@ ENDMODULE.
 " Contrôles de l'onglet Données de base (message E = curseur sur le champ)
 MODULE check_0210 INPUT.
   gv_changed = abap_true.
+  CHECK ok_code = 'SAVE'.
   IF zret_s_art-article_name IS INITIAL.
     MESSAGE 'Renseignez le nom de l''article'(e02) TYPE 'E'.
   ENDIF.
@@ -74,6 +75,7 @@ ENDMODULE.
 
 MODULE check_0220 INPUT.
   gv_changed = abap_true.
+  CHECK ok_code = 'SAVE'.
   IF zret_s_art-price <= 0.
     MESSAGE 'Le prix doit être supérieur à zéro'(e04) TYPE 'E'.
   ENDIF.
