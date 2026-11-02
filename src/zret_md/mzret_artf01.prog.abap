@@ -44,7 +44,7 @@ FORM check_all.
       ts_main-activetab = 'TAB3'.
       MESSAGE |Variante ligne { lv_row } : identifiant manquant| TYPE 'E'.
     ENDIF.
-    IF gs_var-ean IS NOT INITIAL AND ( strlen( gs_var-ean ) <> 13 OR gs_var-ean CN '0123456789' ).
+    IF gs_var-ean IS NOT INITIAL AND ( strlen( gs_var-ean ) <> 13 OR gs_var-ean(13) CN '0123456789' ).
       ts_main-activetab = 'TAB3'.
       MESSAGE |Variante ligne { lv_row } : l'EAN doit avoir 13 chiffres| TYPE 'E'.
     ENDIF.
