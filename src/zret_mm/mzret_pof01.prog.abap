@@ -87,13 +87,15 @@ CLASS lcl_po_alv IMPLEMENTATION.
         go_grid->get_selected_rows( IMPORTING et_index_rows = lt_rows ).
         READ TABLE lt_rows INTO ls_row INDEX 1.
         IF sy-subrc = 0.
-          PERFORM show_detail USING ls_row-index.
+          DATA(lv_idx) = CONV i( ls_row-index ).
+          PERFORM show_detail USING lv_idx.
         ENDIF.
     ENDCASE.
   ENDMETHOD.
 
   METHOD on_double_click.
-    PERFORM show_detail USING e_row-index.
+    DATA(lv_idx) = CONV i( e_row-index ).
+    PERFORM show_detail USING lv_idx.
   ENDMETHOD.
 
   " Saisie dans la grille : rien à refuser ici, les contrôles métier sont
@@ -237,7 +239,7 @@ FORM recalc_header.
   ENDLOOP.
 ENDFORM.
 
-FORM show_detail USING VALUE(iv_index) TYPE i.
+FORM show_detail USING iv_index TYPE i.
   READ TABLE gt_items INTO zret_s_po_item_alv INDEX iv_index.
   IF sy-subrc <> 0.
     MESSAGE 'Sélectionnez un poste'(e04) TYPE 'S' DISPLAY LIKE 'E'.
