@@ -51,3 +51,9 @@ Périmètre retenu pour un premier aller-retour abapGit, en appliquant les leço
 - Moteur MyToolKit 1.6.3 : `cellset:GRILLE[COL=VAL].COL2=VALEUR` (ModifyCell + PressEnter) et `toolbar:GRILLE=FCODE` ajoutés, interdits en campagne de contrôle.
 - Campagne « 7 · ZME23N banc d'essai » : modif-quantite (PO 1, poste 2 → 55, contrôle, sauvegarde, capture du total), drilldown (poste 1, onglet Livraison), echec-attendu (poste 1 livré 50 → quantité 10 refusée au contrôle, puis F12/Oui), inexistante.
 - Ids supposés, à confirmer au premier lancement : `wnd[0]/usr/subSUB_HDR:SAPMZRET_PO:0110/txt…`, `wnd[0]/usr/subSUB_ITEM:SAPMZRET_PO:0120/tabsTS_ITEM/tabpTABI1/ssubSUB_TAB:SAPMZRET_PO:0121/txt…`, grille `auto:grid`.
+
+## État au 02/11/2026, fin de journée : campagne « 7 · ZME23N banc d'essai » 4/4 sur A4H
+
+modif-quantite 11/11 (cellset dans la grille, en-tête replié/déplié, Contrôler, Ctrl+S, total capturé), drilldown 6/6, echec-attendu 9/9, inexistante 4/4. Ids confirmés tels que supposés (`subSUB_HDR:SAPMZRET_PO:0110`, `subSUB_ITEM:SAPMZRET_PO:0120/tabsTS_ITEM/tabpTABI1/ssubSUB_TAB:SAPMZRET_PO:0121`, grille `auto:grid`).
+
+Pièges rencontrés, en plus de ceux de ZMM01 : index de ligne ALV à convertir (`CONV i`) avant un PERFORM typé ; case à cocher = s'appuyer sur un élément de données ; unité 'PC' semée en dur → colonne traitée en CHAR et exit de conversion retiré du catalogue (`convexit`, `ref_table`, `ref_field`), sinon ***** et message système à chaque PBO ; `check_changed_data` avant Contrôler/Sauvegarder ; et surtout un sous-écran de détail qui recopiait au PAI ses valeurs non modifiées par-dessus la saisie faite dans la grille (corrigé par `gs_item_shown`). Ce dernier défaut a été révélé par le scénario « échec attendu » : le banc d'essai a servi à ce qu'il est censé faire.

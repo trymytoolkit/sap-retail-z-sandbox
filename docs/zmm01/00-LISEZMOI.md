@@ -22,3 +22,7 @@ Importé et activé sur A4H via abapGit (transport A4HK900110). Testé à la mai
 - L'article créé est neuf à chaque passage : `A${UNIQ}` dans le CSV (variable fournie par MyToolKit 1.6.3 : base 36 des secondes depuis 2025, 6 caractères). Idem `K${UNIQ}` pour le scénario EAN invalide. Plus de « passage en modification » en boucle.
 - `ZRET_T_ARTICLE-EAN` est rempli à la sauvegarde avec l'EAN de la première variante (il restait vide).
 - Nouveau scénario `zmm01-verif-table` (SE16 sur ZRET_T_ARTICLE puis ZRET_T_ART_VAR, filtré sur `${ARTSAVED}`, conditions `text:`) inséré dans la campagne entre la création et l'EAN invalide. Ids SE16 supposés (`ctxtDATABROWSE-TABLENAME`, `txtI1-LOW`) : à confirmer au premier lancement.
+
+## État au 02/11/2026, fin de journée : campagne 3/3 avec article neuf
+
+Création d'un article neuf (A${UNIQ} → ex. AY0V8) 15/15, vérification en table SE16 11/11 (ids `ctxtDATABROWSE-TABLENAME` et `txtI1-LOW` confirmés, EAN d'en-tête présent), EAN invalide 17/17. Reste cosmétique côté MyToolKit : le libellé de ligne du rapport affiche la valeur brute du CSV (`A${UNIQ}`) plutôt que la valeur résolue.
