@@ -49,5 +49,6 @@ MODULE tc_var_init OUTPUT.
 ENDMODULE.
 
 MODULE tc_var_pbo OUTPUT.
-  " rien de spécial : gs_var est positionné par le LOOP ... WITH CONTROL
+  " gs_var est positionné par le LOOP ... WITH CONTROL ; recopie vers la zone écran
+  zret_s_art_var = gs_var.
 ENDMODULE.

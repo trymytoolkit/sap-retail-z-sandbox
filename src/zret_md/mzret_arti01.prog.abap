@@ -86,7 +86,11 @@ ENDMODULE.
 
 " Table control : recopie de la ligne modifiée
 MODULE tc_var_pai INPUT.
+  gs_var = zret_s_art_var.
   MODIFY gt_var FROM gs_var INDEX tc_var-current_line.
+  IF sy-subrc <> 0 AND gs_var-variant_id IS NOT INITIAL.
+    APPEND gs_var TO gt_var.
+  ENDIF.
   gv_changed = abap_true.
 ENDMODULE.
 

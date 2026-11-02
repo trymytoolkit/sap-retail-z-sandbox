@@ -79,6 +79,7 @@ FORM save_article.
 
   MODIFY zret_t_article FROM ls_art.
   DELETE FROM zret_t_art_var WHERE article_id = ls_art-article_id.
+  sy-subrc = 0.
   IF lt_var IS NOT INITIAL.
     INSERT zret_t_art_var FROM TABLE lt_var.
   ENDIF.

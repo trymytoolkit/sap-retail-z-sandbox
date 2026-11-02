@@ -4,7 +4,7 @@
 PROGRAM sapmzret_art.
 
 " En-tête affiché (structure du dictionnaire : les champs portent son nom)
-TABLES: zret_s_art.
+TABLES: zret_s_art, zret_s_art_var.
 DATA: gs_art_db   TYPE zret_t_article,          " état en base (mode modification)
       gv_exists   TYPE abap_bool,
       gv_changed  TYPE abap_bool,
