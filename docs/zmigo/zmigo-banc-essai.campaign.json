@@ -1,0 +1,15 @@
+{
+  "Id": "zmigo-banc-essai",
+  "Title": "ZMIGO : écran composite (table control, onglets, contrôler puis comptabiliser)",
+  "Domain": "Retail Z",
+  "Category": "8 · ZMIGO banc d'essai",
+  "Kind": "recette",
+  "Description": "Une commande neuve (ZRET_R_PO_DEMO, capture ${PO}) puis trois scénarios sur un écran façon MIGO : contrôle sans poste coché (popup), quantité excessive refusée, réception du poste ouvert avec preuve en table.",
+  "Scenarios": [
+    "rz-po-demo",
+    "zmigo-aucun-poste",
+    "zmigo-qte-excessive",
+    "zmigo-reception-po"
+  ],
+  "StopOnFail": false
+}

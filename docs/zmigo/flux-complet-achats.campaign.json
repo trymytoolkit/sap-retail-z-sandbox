@@ -1,0 +1,17 @@
+{
+  "Id": "flux-complet-achats",
+  "Title": "Flux complet achats : article, commande, réception",
+  "Domain": "Retail Z",
+  "Category": "9 · Flux complet (démo)",
+  "Kind": "recette",
+  "Description": "Le fil rouge de la démo : un article neuf créé dans ZMM01 et vérifié en table, une commande d'achat neuve (ZRET_R_PO_DEMO), sa quantité modifiée dans la grille de ZME23N, puis sa réception dans ZMIGO avec preuve du mouvement en table. Trois familles d'écran, un seul lancement, rejouable à l'infini.",
+  "Scenarios": [
+    "zmm01-creation",
+    "zmm01-verif-table",
+    "rz-po-demo",
+    "zme23n-modif-quantite",
+    "zme23n-drilldown",
+    "zmigo-reception-po"
+  ],
+  "StopOnFail": true
+}

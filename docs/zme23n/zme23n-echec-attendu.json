@@ -3,7 +3,7 @@
   "Category": "test",
   "Mode": "both",
   "Title": "ZME23N · Échec attendu : quantité sous le livré refusée au contrôle",
-  "Description": "Sur le poste ${POSTE} déjà livré (50), écrire une quantité ${QTE} inférieure au livré puis Contrôler : message E « quantité inférieure au livré ». Rien n'est sauvegardé ; Annuler puis Oui pour quitter sans sauver.",
+  "Description": "Sur le poste ${POSTE} déjà livré (50), écrire une quantité ${QTE} inférieure au livré puis Contrôler : message E « quantité inférieure au livré ». Rien n'est sauvegardé ; Annuler puis Oui pour quitter sans sauver. ${PO} vient de rz-po-demo (capture) lancé en tête de campagne : commande neuve à chaque passage, poste 1 livré, poste 2 ouvert.",
   "Data": "zme23n-echec-attendu.csv",
   "Start": "open",
   "Steps": {

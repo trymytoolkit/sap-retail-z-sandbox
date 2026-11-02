@@ -1,0 +1,82 @@
+{
+  "Id": "zmigo-aucun-poste",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZMIGO · Échec attendu : contrôler sans poste coché",
+  "Description": "Charger la commande ${PO} puis Contrôler sans rien cocher : popup d'information « Aucun poste sélectionné », fermée par Entrée. ${PO} vient du scénario rz-po-demo (capture), lancé en tête de campagne : une commande neuve à chaque passage.",
+  "Start": "open",
+  "Steps": {
+    "open": {
+      "Question": "Ouvrir ZMIGO.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nZMIGO",
+      "Expect": [
+        "tcode:ZMIGO"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "ref"
+        }
+      ]
+    },
+    "ref": {
+      "Question": "Commande ${PO}.",
+      "ElementId": "wnd[0]/usr/txtZRET_S_GM_HDR-REF_DOC",
+      "Do": "set:${PO}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "exec"
+        }
+      ]
+    },
+    "exec": {
+      "Question": "Exécuter.",
+      "ElementId": "wnd[0]/usr/btnBTN_EXEC",
+      "Do": "press",
+      "Expect": [
+        "status:à réceptionner"
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "check"
+        }
+      ]
+    },
+    "check": {
+      "Question": "Contrôler sans cocher : popup attendue.",
+      "ElementId": "wnd[0]/usr/btnBTN_CHECK",
+      "Do": "press",
+      "Expect": [
+        "popup:Aucun poste"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "close"
+        }
+      ]
+    },
+    "close": {
+      "Question": "Entrée : la popup se ferme.",
+      "Do": "key:Enter",
+      "Expect": [
+        "nopopup",
+        "screen:wnd[0]/usr/txtZRET_S_GM_HDR-REF_DOC"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Le contrôle sans poste coché a bien été signalé par une popup."
+    }
+  },
+  "Data": "zmigo-aucun-poste.csv"
+}

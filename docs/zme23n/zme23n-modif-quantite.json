@@ -3,7 +3,7 @@
   "Category": "test",
   "Mode": "both",
   "Title": "ZME23N · Modifier la quantité d'un poste dans la grille ALV",
-  "Description": "Écran « Enjoy » : en-tête repliable, postes dans une grille ALV éditable, détail sous la grille. Charge la commande ${PO}, passe en Modifier, écrit QUANTITY=${QTE} dans la cellule du poste ${POSTE} (cellset), contrôle, sauvegarde, capture le total.",
+  "Description": "Écran « Enjoy » : en-tête repliable, postes dans une grille ALV éditable, détail sous la grille. Charge la commande ${PO}, passe en Modifier, écrit QUANTITY=${QTE} dans la cellule du poste ${POSTE} (cellset), contrôle, sauvegarde, capture le total. ${PO} vient de rz-po-demo (capture) lancé en tête de campagne : commande neuve à chaque passage, poste 1 livré, poste 2 ouvert.",
   "Data": "zme23n-modif-quantite.csv",
   "Start": "open",
   "Steps": {

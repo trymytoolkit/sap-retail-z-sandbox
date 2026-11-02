@@ -1,0 +1,183 @@
+{
+  "Id": "zmigo-reception-po",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZMIGO · Réception de marchandises sur commande d'achat",
+  "Description": "Écran composite façon MIGO : bandeau action/référence, en-tête en onglets, postes en table control, détail en onglets, Contrôler puis Comptabiliser. Réceptionne les postes ouverts de la commande ${PO}, capture le numéro de document matière, puis vérifie le mouvement 101 en table (SE16 ZRET_T_STK_MVT). ${PO} vient du scénario rz-po-demo (capture), lancé en tête de campagne : une commande neuve à chaque passage.",
+  "Start": "open",
+  "Steps": {
+    "open": {
+      "Question": "Ouvrir ZMIGO.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nZMIGO",
+      "Expect": [
+        "tcode:ZMIGO",
+        "screen:wnd[0]/usr/txtZRET_S_GM_HDR-REF_DOC"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "ref"
+        }
+      ]
+    },
+    "ref": {
+      "Question": "Commande ${PO} (action Réception et référence Commande d'achat par défaut).",
+      "ElementId": "wnd[0]/usr/txtZRET_S_GM_HDR-REF_DOC",
+      "Do": "set:${PO}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "exec"
+        }
+      ]
+    },
+    "exec": {
+      "Question": "Exécuter : les postes ouverts se chargent dans le table control.",
+      "ElementId": "wnd[0]/usr/btnBTN_EXEC",
+      "Do": "press",
+      "Expect": [
+        "status:à réceptionner",
+        "screen:wnd[0]/usr/tblSAPMZRET_GMTC_ITEMS/txtZRET_S_GM_ITEM-QUANTITY[4,0]",
+        "capture:QTE=wnd[0]/usr/tblSAPMZRET_GMTC_ITEMS/txtZRET_S_GM_ITEM-QUANTITY[4,0]"
+      ],
+      "Hint": "Colonnes du table control : ITEM_NUM=0, ITEM_OK=1, ARTICLE_ID=2, ARTICLE_NAME=3, QUANTITY=4, BASE_UOM=5, DST_ZONE=6, MVT_TYPE=7, STOCK_AVAIL=8, MESSAGE=9 (la colonne de sélection ne compte pas). En cas d'écart, le dump d'écran à l'échec donne les vrais ids.",
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "detail"
+        }
+      ]
+    },
+    "detail": {
+      "Question": "Le détail suit le poste : onglet Où.",
+      "ElementId": "wnd[0]/usr/subSUB_ITEM:SAPMZRET_GM:0120/tabsTS_ITEM/tabpTABI2",
+      "Do": "press",
+      "Expect": [
+        "screen:wnd[0]/usr/subSUB_ITEM:SAPMZRET_GM:0120/tabsTS_ITEM/tabpTABI2/ssubSUB_ITAB:SAPMZRET_GM:0122/txtZRET_S_GM_ITEM-DST_ZONE",
+        "value:wnd[0]/usr/subSUB_ITEM:SAPMZRET_GM:0120/tabsTS_ITEM/tabpTABI2/ssubSUB_ITAB:SAPMZRET_GM:0122/txtZRET_S_GM_ITEM-DST_ZONE=RECV"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "allok"
+        }
+      ]
+    },
+    "allok": {
+      "Question": "Tout OK : tous les postes cochés.",
+      "ElementId": "wnd[0]/usr/btnBTN_ALL_OK",
+      "Do": "press",
+      "Expect": [
+        "noerror:"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "check"
+        }
+      ]
+    },
+    "check": {
+      "Question": "Contrôler : document prêt.",
+      "ElementId": "wnd[0]/usr/btnBTN_CHECK",
+      "Do": "press",
+      "Expect": [
+        "statustype:S",
+        "status:prêt"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "post"
+        }
+      ]
+    },
+    "post": {
+      "Question": "Comptabiliser (Ctrl+S) : document matière créé.",
+      "Do": "key:Ctrl+S",
+      "Expect": [
+        "statustype:S",
+        "status:comptabilisé",
+        "capture:GMDOC=sbar#Document matière (\\S+) comptabilisé"
+      ],
+      "TimeoutMs": 20000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "se16"
+        }
+      ]
+    },
+    "se16": {
+      "Question": "Preuve en table : SE16 ZRET_T_STK_MVT.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nSE16",
+      "Expect": [
+        "tcode:SE16"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "table"
+        }
+      ]
+    },
+    "table": {
+      "Question": "Table ZRET_T_STK_MVT.",
+      "ElementId": "wnd[0]/usr/ctxtDATABROWSE-TABLENAME",
+      "Do": "set:ZRET_T_STK_MVT",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "enter"
+        }
+      ]
+    },
+    "enter": {
+      "Question": "Entrée.",
+      "Do": "key:Enter",
+      "Expect": [
+        "screen:wnd[0]/usr/txtI1-LOW"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "filtre"
+        }
+      ]
+    },
+    "filtre": {
+      "Question": "Document ${GMDOC}.",
+      "ElementId": "wnd[0]/usr/txtI1-LOW",
+      "Do": "set:${GMDOC}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "exec16"
+        }
+      ]
+    },
+    "exec16": {
+      "Question": "Exécuter : mouvement 101 vers RECV sur la commande ${PO}.",
+      "Do": "key:F8",
+      "Expect": [
+        "text:101",
+        "text:RECV",
+        "text:${PO}"
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Document matière ${GMDOC} comptabilisé sur la commande ${PO} (quantité reçue ${QTE}), mouvement 101 vérifié en table."
+    }
+  },
+  "Data": "zmigo-reception-po.csv"
+}

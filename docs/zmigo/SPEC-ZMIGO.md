@@ -34,3 +34,9 @@ Statut GUI `MAIN` : Contrôler `CHECK` (F7, bouton « Contrôler »), Comptabili
 
 - Rien d'obligatoire : table control adressé par `[col,row]`, popups, barre de statut, listes déroulantes, tout est déjà couvert. Le confort viendra avec `tc:` (viser une colonne par nom et une ligne par valeur, comme pour les grilles).
 - Pour la version EWM (Z/SCWM/TU) : un arbre de HU (`cl_gui_simple_tree`) et la sélection de nœuds (`selectedNode`, `doubleClickNode`), à ajouter au moteur à ce moment-là.
+
+## Réalisé le 02/11/2026 (première version, générée par `gen_zmigo.py`)
+
+Périmètre : réception sur commande d'achat (A01 + R01) uniquement ; les autres actions répondent « non couvert ». Bandeau avec deux listes déroulantes, en-tête en tabstrip (Général / Infos), postes en table control `TC_ITEMS` (colonne OK à cocher, quantité et zone saisissables, colonne Message), détail en tabstrip (Article / Où / Lot-HU) qui suit la ligne sous le curseur, boutons Exécuter / Contrôler / Comptabiliser / Tout OK / Supprimer. La comptabilisation passe par `zcl_ret_purch_order=>post_goods_receipt` (mouvement 101 en RECV, mise à jour de la commande, tâche de rangement) ; le numéro du premier mouvement sert de document matière. Pas de tables ZRET_T_GM_* dans cette version. Les refus sont en `S DISPLAY LIKE 'E'` pour garder l'écran saisissable.
+
+Campagnes : « 8 · ZMIGO banc d'essai » (rz-po-demo pour une commande neuve, puis popup sans poste, quantité excessive, réception avec SE16) et « 9 · Flux complet (démo) » : zmm01-creation, zmm01-verif-table, rz-po-demo, zme23n-modif-quantite, zme23n-drilldown, zmigo-reception-po. Les scénarios ZME23N/ZMIGO prennent ${PO} de la capture de rz-po-demo (plus de PO en dur dans les CSV).

@@ -1,0 +1,124 @@
+{
+  "Id": "zmigo-qte-excessive",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZMIGO · Échec attendu : quantité supérieure au reste à livrer",
+  "Description": "Charger la commande ${PO}, cocher le premier poste, forcer la quantité à ${QTE} (bien plus que le reste à livrer) dans la cellule du table control, Contrôler : refus avec la colonne Message renseignée. Annuler puis Oui.",
+  "Data": "zmigo-qte-excessive.csv",
+  "Start": "open",
+  "Steps": {
+    "open": {
+      "Question": "Ouvrir ZMIGO.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nZMIGO",
+      "Expect": [
+        "tcode:ZMIGO"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "ref"
+        }
+      ]
+    },
+    "ref": {
+      "Question": "Commande ${PO}.",
+      "ElementId": "wnd[0]/usr/txtZRET_S_GM_HDR-REF_DOC",
+      "Do": "set:${PO}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "exec"
+        }
+      ]
+    },
+    "exec": {
+      "Question": "Exécuter.",
+      "ElementId": "wnd[0]/usr/btnBTN_EXEC",
+      "Do": "press",
+      "Expect": [
+        "status:à réceptionner",
+        "screen:wnd[0]/usr/tblSAPMZRET_GMTC_ITEMS/txtZRET_S_GM_ITEM-QUANTITY[4,0]"
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "ok1"
+        }
+      ]
+    },
+    "ok1": {
+      "Question": "Cocher le premier poste.",
+      "ElementId": "wnd[0]/usr/tblSAPMZRET_GMTC_ITEMS/chkZRET_S_GM_ITEM-ITEM_OK[1,0]",
+      "Do": "set:X",
+      "Hint": "Colonnes du table control : ITEM_NUM=0, ITEM_OK=1, ARTICLE_ID=2, ARTICLE_NAME=3, QUANTITY=4, BASE_UOM=5, DST_ZONE=6, MVT_TYPE=7, STOCK_AVAIL=8, MESSAGE=9 (la colonne de sélection ne compte pas). En cas d'écart, le dump d'écran à l'échec donne les vrais ids.",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "qty"
+        }
+      ]
+    },
+    "qty": {
+      "Question": "Quantité ${QTE} sur le premier poste (cellule du table control).",
+      "ElementId": "wnd[0]/usr/tblSAPMZRET_GMTC_ITEMS/txtZRET_S_GM_ITEM-QUANTITY[4,0]",
+      "Do": "set:${QTE}",
+      "Expect": [
+        "value:wnd[0]/usr/tblSAPMZRET_GMTC_ITEMS/txtZRET_S_GM_ITEM-QUANTITY[4,0]=${QTE}"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "check"
+        }
+      ]
+    },
+    "check": {
+      "Question": "Contrôler : refus attendu.",
+      "ElementId": "wnd[0]/usr/btnBTN_CHECK",
+      "Do": "press",
+      "Expect": [
+        "statustype:E",
+        "status:en erreur",
+        "text:supérieure au reste"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "cancel"
+        }
+      ]
+    },
+    "cancel": {
+      "Question": "Annuler (F12) : popup Quitter.",
+      "Do": "key:F12",
+      "Expect": [
+        "popup:Quitter"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "yes"
+        }
+      ]
+    },
+    "yes": {
+      "Question": "Oui : retour sans comptabilisation.",
+      "ElementId": "wnd[1]/usr/btnBUTTON_1",
+      "Do": "press",
+      "Expect": [
+        "tcode:SESSION_MANAGER"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Le contrôle a bien refusé une quantité excessive sur ${PO}, rien n'a été comptabilisé."
+    }
+  }
+}
