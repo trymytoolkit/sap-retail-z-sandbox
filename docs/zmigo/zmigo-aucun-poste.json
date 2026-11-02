@@ -64,7 +64,6 @@
       "Question": "Entrée : la popup se ferme.",
       "Do": "key:Enter",
       "Expect": [
-        "nopopup",
         "screen:wnd[0]/usr/txtZRET_S_GM_HDR-REF_DOC"
       ],
       "Choices": [

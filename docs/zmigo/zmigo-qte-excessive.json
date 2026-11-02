@@ -81,7 +81,7 @@
       "Expect": [
         "statustype:E",
         "status:en erreur",
-        "text:supérieure au reste"
+        "capture:MSG=wnd[0]/usr/tblSAPMZRET_GMTC_ITEMS/txtZRET_S_GM_ITEM-MESSAGE[9,0]#(sup\\u00e9rieure au reste.*)"
       ],
       "Choices": [
         {
@@ -118,7 +118,7 @@
       ]
     },
     "fin": {
-      "Conclusion": "Le contrôle a bien refusé une quantité excessive sur ${PO}, rien n'a été comptabilisé."
+      "Conclusion": "Le contrôle a bien refusé une quantité excessive sur ${PO} (message de ligne : ${MSG}), rien n'a été comptabilisé."
     }
   }
 }

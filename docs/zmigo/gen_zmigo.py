@@ -192,7 +192,14 @@ MODULE tc_pai INPUT.
   DATA ls_old TYPE zret_s_gm_item.
   READ TABLE gt_items INTO ls_old INDEX tc_items-current_line.
   CHECK sy-subrc = 0.
-  gs_item = zret_s_gm_item.
+  " Seules les colonnes saisissables viennent de l'écran ; le reste garde
+  " la valeur de la table interne (les champs en sortie ne sont pas transportés
+  " et la ligne de travail peut contenir des restes d'une autre ligne).
+  gs_item          = ls_old.
+  gs_item-mark     = zret_s_gm_item-mark.
+  gs_item-item_ok  = zret_s_gm_item-item_ok.
+  gs_item-quantity = zret_s_gm_item-quantity.
+  gs_item-dst_zone = zret_s_gm_item-dst_zone.
   MODIFY gt_items FROM gs_item INDEX tc_items-current_line.
   IF gs_item <> ls_old.
     gv_changed = abap_true.
@@ -239,16 +246,27 @@ ENDMODULE.
 
 " Détail : seules les valeurs modifiées à l'écran du détail sont recopiées
 MODULE item_pai INPUT.
+  " La zone de travail est partagée avec le table control : au PAI elle porte
+  " la dernière ligne transportée. On ne lit donc que les champs présents sur
+  " le sous-écran courant (sy-dynnr), et seulement s'ils ont changé.
   CHECK gv_detail_idx > 0.
-  CHECK zret_s_gm_item <> gs_item_shown.
   READ TABLE gt_items ASSIGNING FIELD-SYMBOL(<ls_cur>) INDEX gv_detail_idx.
-  IF sy-subrc = 0.
-    <ls_cur>-quantity = zret_s_gm_item-quantity.
-    <ls_cur>-dst_zone = zret_s_gm_item-dst_zone.
-    <ls_cur>-hu_id    = zret_s_gm_item-hu_id.
-    <ls_cur>-batch    = zret_s_gm_item-batch.
-    gv_changed = abap_true.
-  ENDIF.
+  CHECK sy-subrc = 0.
+  CASE sy-dynnr.
+    WHEN '0121'.
+      IF zret_s_gm_item-quantity <> gs_item_shown-quantity.
+        <ls_cur>-quantity = zret_s_gm_item-quantity. gv_changed = abap_true.
+      ENDIF.
+    WHEN '0122'.
+      IF zret_s_gm_item-dst_zone <> gs_item_shown-dst_zone.
+        <ls_cur>-dst_zone = zret_s_gm_item-dst_zone. gv_changed = abap_true.
+      ENDIF.
+    WHEN '0123'.
+      IF zret_s_gm_item-hu_id <> gs_item_shown-hu_id OR zret_s_gm_item-batch <> gs_item_shown-batch.
+        <ls_cur>-hu_id = zret_s_gm_item-hu_id. <ls_cur>-batch = zret_s_gm_item-batch.
+        gv_changed = abap_true.
+      ENDIF.
+  ENDCASE.
 ENDMODULE.
 ''')
 
