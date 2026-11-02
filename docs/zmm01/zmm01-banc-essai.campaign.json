@@ -1,0 +1,13 @@
+{
+  "Id": "zmm01-banc-essai",
+  "Title": "ZMM01 : écran standard (onglets, table control)",
+  "Domain": "Retail Z",
+  "Category": "6 · ZMM01 banc d'essai",
+  "Kind": "recette",
+  "Description": "Deux scénarios sur un module pool façon MM01 : création nominale avec variantes, puis refus attendu d'un EAN invalide.",
+  "Scenarios": [
+    "zmm01-creation",
+    "zmm01-ean-invalide"
+  ],
+  "StopOnFail": false
+}

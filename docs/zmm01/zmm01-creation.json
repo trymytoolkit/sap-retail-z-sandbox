@@ -1,0 +1,196 @@
+{
+  "Id": "zmm01-creation",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZMM01 · Créer un article avec deux variantes",
+  "Description": "Banc d'essai « écran standard » : onglets, sous-écrans, liste déroulante, table control, sauvegarde Ctrl+S. Attendu : message S « Article X sauvegardé (2 variante(s)) ».",
+  "Data": "zmm01-creation.csv",
+  "Start": "open",
+  "Steps": {
+    "open": {
+      "Question": "Ouvrir ZMM01.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nZMM01",
+      "Expect": [
+        "tcode:ZMM01",
+        "screen:wnd[0]/usr/ctxtZRET_S_ART-ARTICLE_ID"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "id"
+        }
+      ]
+    },
+    "id": {
+      "Question": "Article ${ART}.",
+      "ElementId": "wnd[0]/usr/ctxtZRET_S_ART-ARTICLE_ID",
+      "Do": "set:${ART}",
+      "Expect": [
+        "value:wnd[0]/usr/ctxtZRET_S_ART-ARTICLE_ID=${ART}"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "go"
+        }
+      ]
+    },
+    "go": {
+      "Question": "Entrée : l'écran principal s'ouvre sur Données de base.",
+      "Do": "key:Enter",
+      "Expect": [
+        "screen:wnd[0]/usr/tabsTS_MAIN/tabpTAB1/ssubSUB_MAIN:SAPMZRET_ART:0210/txtZRET_S_ART-ARTICLE_NAME"
+      ],
+      "Hint": "Si l'id de l'onglet ou du sous-écran diffère, relevez-le avec « Voir les éléments de l'écran ».",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "name"
+        }
+      ]
+    },
+    "name": {
+      "Question": "Nom ${NOM}.",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB1/ssubSUB_MAIN:SAPMZRET_ART:0210/txtZRET_S_ART-ARTICLE_NAME",
+      "Do": "set:${NOM}",
+      "Expect": [
+        "value:wnd[0]/usr/tabsTS_MAIN/tabpTAB1/ssubSUB_MAIN:SAPMZRET_ART:0210/txtZRET_S_ART-ARTICLE_NAME=${NOM}"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "type"
+        }
+      ]
+    },
+    "type": {
+      "Question": "Type ${TYPE} (liste déroulante).",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB1/ssubSUB_MAIN:SAPMZRET_ART:0210/cmbZRET_S_ART-ARTICLE_TYPE",
+      "Do": "set:${TYPE}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "tab2"
+        }
+      ]
+    },
+    "tab2": {
+      "Question": "Onglet Vente.",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB2",
+      "Do": "press",
+      "Expect": [
+        "screen:wnd[0]/usr/tabsTS_MAIN/tabpTAB2/ssubSUB_MAIN:SAPMZRET_ART:0220/txtZRET_S_ART-PRICE"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "price"
+        }
+      ]
+    },
+    "price": {
+      "Question": "Prix ${PRIX}.",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB2/ssubSUB_MAIN:SAPMZRET_ART:0220/txtZRET_S_ART-PRICE",
+      "Do": "set:${PRIX}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "tab3"
+        }
+      ]
+    },
+    "tab3": {
+      "Question": "Onglet Variantes (table control).",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB3",
+      "Do": "press",
+      "Expect": [
+        "screen:wnd[0]/usr/tabsTS_MAIN/tabpTAB3/ssubSUB_MAIN:SAPMZRET_ART:0230/tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-VARIANT_ID[0,0]"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "v1"
+        }
+      ]
+    },
+    "v1": {
+      "Question": "Variante 1 : ${V1}.",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB3/ssubSUB_MAIN:SAPMZRET_ART:0230/tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-VARIANT_ID[0,0]",
+      "Do": "set:${V1}",
+      "Expect": [
+        "value:wnd[0]/usr/tabsTS_MAIN/tabpTAB3/ssubSUB_MAIN:SAPMZRET_ART:0230/tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-VARIANT_ID[0,0]=${V1}"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "c1"
+        }
+      ]
+    },
+    "c1": {
+      "Question": "Couleur ${COL1}.",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB3/ssubSUB_MAIN:SAPMZRET_ART:0230/tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-COLOR[1,0]",
+      "Do": "set:${COL1}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "e1"
+        }
+      ]
+    },
+    "e1": {
+      "Question": "EAN ${EAN1}.",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB3/ssubSUB_MAIN:SAPMZRET_ART:0230/tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-EAN[3,0]",
+      "Do": "set:${EAN1}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "v2"
+        }
+      ]
+    },
+    "v2": {
+      "Question": "Variante 2 : ${V2}.",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB3/ssubSUB_MAIN:SAPMZRET_ART:0230/tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-VARIANT_ID[0,1]",
+      "Do": "set:${V2}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "e2"
+        }
+      ]
+    },
+    "e2": {
+      "Question": "EAN ${EAN2}.",
+      "ElementId": "wnd[0]/usr/tabsTS_MAIN/tabpTAB3/ssubSUB_MAIN:SAPMZRET_ART:0230/tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-EAN[3,1]",
+      "Do": "set:${EAN2}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "save"
+        }
+      ]
+    },
+    "save": {
+      "Question": "Sauvegarder (Ctrl+S).",
+      "Do": "key:Ctrl+S",
+      "Expect": [
+        "statustype:S",
+        "status:sauvegardé",
+        "capture:ARTSAVED=sbar#Article (\\S+) sauvegardé"
+      ],
+      "TimeoutMs": 15000,
+      "Hint": "Un message E ici signifie qu'un contrôle a refusé : le curseur est sur le champ en cause, la capture le montre.",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Article ${ARTSAVED} créé avec ses variantes."
+    }
+  }
+}
