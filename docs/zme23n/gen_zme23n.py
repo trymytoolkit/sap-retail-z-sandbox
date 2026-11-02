@@ -44,7 +44,7 @@ struct('ZRET_S_PO_ITEM_ALV', 'Retail Z - PO item grid structure (ZME23N)', [
     ('ITEM_NUM', 'B', 'NUMC', 4), ('ARTICLE_ID', 'E', 'ZDE_RET_ARTICLE_ID'), ('ARTICLE_NAME', 'B', 'CHAR', 40),
     ('QUANTITY', 'B', 'DEC', 13, 3), ('BASE_UOM', 'E', 'MEINS'), ('UNIT_PRICE', 'B', 'DEC', 11, 2),
     ('LINE_AMOUNT', 'B', 'DEC', 13, 2), ('CURRENCY', 'E', 'WAERS'), ('DELIVERED_QTY', 'B', 'DEC', 13, 3),
-    ('OPEN_QTY', 'B', 'DEC', 13, 3), ('FINAL_DELIVERY', 'B', 'CHAR', 1)])
+    ('OPEN_QTY', 'B', 'DEC', 13, 3), ('FINAL_DELIVERY', 'E', 'ZDE_RET_ACTIVE_FLAG')])
 
 # ---------------------------------------------------------------- transaction
 w('zme23n.tran.xml', HEAD.format(ser='LCL_OBJECT_TRAN') + f'   <TSTC>\n    <TCODE>ZME23N</TCODE>\n    <PGMNA>{P}</PGMNA>\n    <DYPNO>0100</DYPNO>\n   </TSTC>\n   <TSTCC>\n    <TCODE>ZME23N</TCODE>\n   </TSTCC>\n   <TSTCT>\n    <SPRSL>E</SPRSL>\n    <TCODE>ZME23N</TCODE>\n    <TTEXT>Purchase order display/change (ME23N-style test bench)</TTEXT>\n   </TSTCT>\n' + TAIL)
