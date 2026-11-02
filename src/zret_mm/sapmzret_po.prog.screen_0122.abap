@@ -1,4 +1,5 @@
 PROCESS BEFORE OUTPUT.
+  MODULE item_pbo.
   MODULE set_input.
 
 PROCESS AFTER INPUT.

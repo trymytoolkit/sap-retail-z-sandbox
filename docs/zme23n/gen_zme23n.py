@@ -70,6 +70,7 @@ DATA: gs_po_db    TYPE zret_t_po,                       " état en base
       gv_edit     TYPE abap_bool,                       " X = mode Modifier
       gv_changed  TYPE abap_bool,
       gv_hdr_open TYPE abap_bool VALUE 'X',             " en-tête déplié
+      gs_item_shown TYPE zret_s_po_item_alv,            " détail tel qu'affiché au PBO
       gv_title    TYPE string,
       ok_code     TYPE sy-ucomm,
       gv_save_ok  TYPE sy-ucomm.
@@ -122,6 +123,20 @@ MODULE init_grid OUTPUT.
   ELSE.
     PERFORM refresh_grid.
   ENDIF.
+ENDMODULE.
+
+" Détail du poste : resynchronisé depuis la grille (une saisie dans la
+" grille doit se voir dans le détail), et mémorisé tel qu'affiché pour
+" ne recopier au PAI que ce que l'utilisateur a réellement changé ici.
+MODULE item_pbo OUTPUT.
+  IF zret_s_po_item_alv-item_num IS NOT INITIAL.
+    READ TABLE gt_items INTO DATA(ls_cur)
+         WITH KEY item_num = zret_s_po_item_alv-item_num.
+    IF sy-subrc = 0.
+      zret_s_po_item_alv = ls_cur.
+    ENDIF.
+  ENDIF.
+  gs_item_shown = zret_s_po_item_alv.
 ENDMODULE.
 
 " En-tête et détail : saisie seulement en mode Modifier
@@ -213,6 +228,12 @@ ENDMODULE.
 " Détail du poste (0121/0122) : recopie vers la ligne de la grille
 MODULE item_pai INPUT.
   CHECK gv_edit = abap_true AND zret_s_po_item_alv-item_num IS NOT INITIAL.
+  " Seules les valeurs modifiées À L'ÉCRAN DU DÉTAIL sont recopiées : sinon
+  " le détail (qui affiche encore l'ancienne valeur) écraserait une saisie
+  " faite dans la grille (vécu : quantité 10 dans la grille, 50 dans le détail).
+  CHECK zret_s_po_item_alv-quantity <> gs_item_shown-quantity
+     OR zret_s_po_item_alv-unit_price <> gs_item_shown-unit_price
+     OR zret_s_po_item_alv-final_delivery <> gs_item_shown-final_delivery.
   READ TABLE gt_items ASSIGNING FIELD-SYMBOL(<ls_item>)
        WITH KEY item_num = zret_s_po_item_alv-item_num.
   IF sy-subrc = 0.
@@ -599,12 +620,14 @@ PROCESS AFTER INPUT.
   CALL SUBSCREEN sub_tab.
 ''',
 '0121': '''PROCESS BEFORE OUTPUT.
+  MODULE item_pbo.
   MODULE set_input.
 
 PROCESS AFTER INPUT.
   MODULE item_pai.
 ''',
 '0122': '''PROCESS BEFORE OUTPUT.
+  MODULE item_pbo.
   MODULE set_input.
 
 PROCESS AFTER INPUT.

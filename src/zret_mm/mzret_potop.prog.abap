@@ -12,6 +12,7 @@ DATA: gs_po_db    TYPE zret_t_po,                       " état en base
       gv_edit     TYPE abap_bool,                       " X = mode Modifier
       gv_changed  TYPE abap_bool,
       gv_hdr_open TYPE abap_bool VALUE 'X',             " en-tête déplié
+      gs_item_shown TYPE zret_s_po_item_alv,            " détail tel qu'affiché au PBO
       gv_title    TYPE string,
       ok_code     TYPE sy-ucomm,
       gv_save_ok  TYPE sy-ucomm.

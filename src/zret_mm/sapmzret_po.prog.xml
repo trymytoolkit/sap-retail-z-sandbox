@@ -772,6 +772,9 @@
        <LINE>PROCESS BEFORE OUTPUT.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
+       <LINE>  MODULE item_pbo.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
        <LINE>  MODULE set_input.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW/>
@@ -880,6 +883,9 @@
      <FLOW_LOGIC>
       <RPY_DYFLOW>
        <LINE>PROCESS BEFORE OUTPUT.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>  MODULE item_pbo.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
        <LINE>  MODULE set_input.</LINE>

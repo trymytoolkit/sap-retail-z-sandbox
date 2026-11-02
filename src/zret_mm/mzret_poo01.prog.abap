@@ -31,6 +31,20 @@ MODULE init_grid OUTPUT.
   ENDIF.
 ENDMODULE.
 
+" Détail du poste : resynchronisé depuis la grille (une saisie dans la
+" grille doit se voir dans le détail), et mémorisé tel qu'affiché pour
+" ne recopier au PAI que ce que l'utilisateur a réellement changé ici.
+MODULE item_pbo OUTPUT.
+  IF zret_s_po_item_alv-item_num IS NOT INITIAL.
+    READ TABLE gt_items INTO DATA(ls_cur)
+         WITH KEY item_num = zret_s_po_item_alv-item_num.
+    IF sy-subrc = 0.
+      zret_s_po_item_alv = ls_cur.
+    ENDIF.
+  ENDIF.
+  gs_item_shown = zret_s_po_item_alv.
+ENDMODULE.
+
 " En-tête et détail : saisie seulement en mode Modifier
 MODULE set_input OUTPUT.
   LOOP AT SCREEN.

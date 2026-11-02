@@ -72,6 +72,12 @@ ENDMODULE.
 " Détail du poste (0121/0122) : recopie vers la ligne de la grille
 MODULE item_pai INPUT.
   CHECK gv_edit = abap_true AND zret_s_po_item_alv-item_num IS NOT INITIAL.
+  " Seules les valeurs modifiées À L'ÉCRAN DU DÉTAIL sont recopiées : sinon
+  " le détail (qui affiche encore l'ancienne valeur) écraserait une saisie
+  " faite dans la grille (vécu : quantité 10 dans la grille, 50 dans le détail).
+  CHECK zret_s_po_item_alv-quantity <> gs_item_shown-quantity
+     OR zret_s_po_item_alv-unit_price <> gs_item_shown-unit_price
+     OR zret_s_po_item_alv-final_delivery <> gs_item_shown-final_delivery.
   READ TABLE gt_items ASSIGNING FIELD-SYMBOL(<ls_item>)
        WITH KEY item_num = zret_s_po_item_alv-item_num.
   IF sy-subrc = 0.
