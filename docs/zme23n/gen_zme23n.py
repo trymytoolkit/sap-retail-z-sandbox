@@ -42,7 +42,7 @@ struct('ZRET_S_PO_HDR', 'Retail Z - PO header screen structure (ZME23N)', [
     ('TOTAL_AMOUNT', 'B', 'DEC', 13, 2), ('CURRENCY', 'E', 'WAERS')])
 struct('ZRET_S_PO_ITEM_ALV', 'Retail Z - PO item grid structure (ZME23N)', [
     ('ITEM_NUM', 'B', 'NUMC', 4), ('ARTICLE_ID', 'E', 'ZDE_RET_ARTICLE_ID'), ('ARTICLE_NAME', 'B', 'CHAR', 40),
-    ('QUANTITY', 'B', 'DEC', 13, 3), ('BASE_UOM', 'E', 'MEINS'), ('UNIT_PRICE', 'B', 'DEC', 11, 2),
+    ('QUANTITY', 'B', 'DEC', 13, 3), ('BASE_UOM', 'B', 'CHAR', 3), ('UNIT_PRICE', 'B', 'DEC', 11, 2),
     ('LINE_AMOUNT', 'B', 'DEC', 13, 2), ('CURRENCY', 'E', 'WAERS'), ('DELIVERED_QTY', 'B', 'DEC', 13, 3),
     ('OPEN_QTY', 'B', 'DEC', 13, 3), ('FINAL_DELIVERY', 'E', 'ZDE_RET_ACTIVE_FLAG')])
 
@@ -377,10 +377,17 @@ ENDFORM.
 FORM set_fcat_edit.
   LOOP AT gt_fcat ASSIGNING FIELD-SYMBOL(<ls_fcat>).
     CASE <ls_fcat>-fieldname.
-      WHEN 'QUANTITY' OR 'UNIT_PRICE' OR 'ARTICLE_ID'.
+      WHEN 'ARTICLE_ID'.
         <ls_fcat>-edit = gv_edit.
       WHEN 'OPEN_QTY'.
         <ls_fcat>-coltext = 'Reste à livrer'(c01).
+      WHEN 'ITEM_NUM'.      <ls_fcat>-coltext = 'Poste'(c03).
+      WHEN 'ARTICLE_NAME'.  <ls_fcat>-coltext = 'Désignation'(c04).
+      WHEN 'QUANTITY'.      <ls_fcat>-coltext = 'Quantité'(c05). <ls_fcat>-edit = gv_edit.
+      WHEN 'BASE_UOM'.      <ls_fcat>-coltext = 'Unité'(c06).
+      WHEN 'UNIT_PRICE'.    <ls_fcat>-coltext = 'Prix unitaire'(c07). <ls_fcat>-edit = gv_edit.
+      WHEN 'LINE_AMOUNT'.   <ls_fcat>-coltext = 'Montant'(c08).
+      WHEN 'DELIVERED_QTY'. <ls_fcat>-coltext = 'Livré'(c09).
       WHEN 'FINAL_DELIVERY'.
         <ls_fcat>-checkbox = 'X'.
         <ls_fcat>-coltext  = 'Liv. finale'(c02).
@@ -676,7 +683,7 @@ s0121 = screen('0121', 'ZME23N: item data', 'I', 6, 112, [], [
     lab('Article', 2, 1, 12), tmpl('ZRET_S_PO_ITEM_ALV-ARTICLE_ID', 2, 14, 10, out=True),
     tmpl('ZRET_S_PO_ITEM_ALV-ARTICLE_NAME', 2, 26, 40, out=True),
     lab('Quantity', 3, 1, 12), tmpl('ZRET_S_PO_ITEM_ALV-QUANTITY', 3, 14, 17, fmt='DEC', group='EDT'),
-    tmpl('ZRET_S_PO_ITEM_ALV-BASE_UOM', 3, 32, 3, fmt='UNIT', out=True),
+    tmpl('ZRET_S_PO_ITEM_ALV-BASE_UOM', 3, 32, 3, out=True),
     lab('Unit price', 4, 1, 12), tmpl('ZRET_S_PO_ITEM_ALV-UNIT_PRICE', 4, 14, 14, fmt='DEC', group='EDT'),
     lab('Line amount', 5, 1, 12), tmpl('ZRET_S_PO_ITEM_ALV-LINE_AMOUNT', 5, 14, 17, fmt='DEC', out=True)])
 # 0122 : livraison

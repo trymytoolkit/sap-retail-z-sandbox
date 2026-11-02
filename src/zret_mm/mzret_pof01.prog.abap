@@ -152,10 +152,17 @@ ENDFORM.
 FORM set_fcat_edit.
   LOOP AT gt_fcat ASSIGNING FIELD-SYMBOL(<ls_fcat>).
     CASE <ls_fcat>-fieldname.
-      WHEN 'QUANTITY' OR 'UNIT_PRICE' OR 'ARTICLE_ID'.
+      WHEN 'ARTICLE_ID'.
         <ls_fcat>-edit = gv_edit.
       WHEN 'OPEN_QTY'.
         <ls_fcat>-coltext = 'Reste à livrer'(c01).
+      WHEN 'ITEM_NUM'.      <ls_fcat>-coltext = 'Poste'(c03).
+      WHEN 'ARTICLE_NAME'.  <ls_fcat>-coltext = 'Désignation'(c04).
+      WHEN 'QUANTITY'.      <ls_fcat>-coltext = 'Quantité'(c05). <ls_fcat>-edit = gv_edit.
+      WHEN 'BASE_UOM'.      <ls_fcat>-coltext = 'Unité'(c06).
+      WHEN 'UNIT_PRICE'.    <ls_fcat>-coltext = 'Prix unitaire'(c07). <ls_fcat>-edit = gv_edit.
+      WHEN 'LINE_AMOUNT'.   <ls_fcat>-coltext = 'Montant'(c08).
+      WHEN 'DELIVERED_QTY'. <ls_fcat>-coltext = 'Livré'(c09).
       WHEN 'FINAL_DELIVERY'.
         <ls_fcat>-checkbox = 'X'.
         <ls_fcat>-coltext  = 'Liv. finale'(c02).
