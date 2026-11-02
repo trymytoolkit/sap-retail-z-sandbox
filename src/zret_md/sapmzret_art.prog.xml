@@ -748,7 +748,13 @@
        <LINE>  MODULE tc_var_init.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
-       <LINE>  LOOP AT gt_var INTO gs_var WITH CONTROL tc_var CURSOR tc_var-current_line.</LINE>
+       <LINE>  LOOP AT gt_var INTO gs_var</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>       WITH CONTROL tc_var</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>       CURSOR tc_var-current_line.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
        <LINE>    MODULE tc_var_pbo.</LINE>

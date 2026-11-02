@@ -1,6 +1,8 @@
 PROCESS BEFORE OUTPUT.
   MODULE tc_var_init.
-  LOOP AT gt_var INTO gs_var WITH CONTROL tc_var CURSOR tc_var-current_line.
+  LOOP AT gt_var INTO gs_var
+       WITH CONTROL tc_var
+       CURSOR tc_var-current_line.
     MODULE tc_var_pbo.
   ENDLOOP.
 
