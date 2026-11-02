@@ -167,6 +167,12 @@ ENDMODULE.
 
 MODULE user_command_0100 INPUT.
   gv_save_ok = ok_code. CLEAR ok_code.
+  " Les saisies faites dans la grille ne sont transférées à gt_items qu'à
+  " la demande : sans ce flush, Contrôler et Sauvegarder verraient les
+  " anciennes valeurs (vécu : quantité 10 < livré 50 déclarée « sans erreur »).
+  IF go_grid IS NOT INITIAL AND gv_edit = abap_true.
+    go_grid->check_changed_data( ).
+  ENDIF.
   CASE gv_save_ok.
     WHEN 'OTHER' OR 'ENTER' OR space.
       IF zret_s_po_hdr-po_number IS INITIAL.
