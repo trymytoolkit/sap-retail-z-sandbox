@@ -40,7 +40,12 @@ def okcode(): return fld('SCREEN','SCREEN','OKCODE','OK_CODE','_'*20,0,0,20,io=F
 def screen(no,descr,type_,lines,cols,containers,fields,next_=None):
     x='    <item>\n     <HEADER>\n'+f'      <PROGRAM>{P}</PROGRAM>\n      <SCREEN>{no}</SCREEN>\n      <LANGUAGE>E</LANGUAGE>\n      <DESCRIPT>{descr}</DESCRIPT>\n      <TYPE>{type_}</TYPE>\n      <NEXTSCREEN>{next_ or no}</NEXTSCREEN>\n      <LINES>{n3(lines)}</LINES>\n      <COLUMNS>{n3(cols)}</COLUMNS>\n     </HEADER>\n'
     x+='     <CONTAINERS>\n'+cont('SCREEN','SCREEN')+''.join(containers)+'     </CONTAINERS>\n'
-    x+='     <FIELDS>\n'+''.join(fields)+'     </FIELDS>\n    </item>\n'
+    x+='     <FIELDS>\n'+''.join(fields)+'     </FIELDS>\n'
+    # Flow logic AUSSI dans le XML (les versions d'abapGit antérieures aux
+    # fichiers screen_NNNN.abap la lisent ici ; les récentes prennent le fichier).
+    flow=open(f'src/zret_md/sapmzret_art.prog.screen_{no}.abap',encoding='utf-8').read().rstrip('\n').split('\n')
+    x+='     <FLOW_LOGIC>\n'+''.join(f'      <RPY_DYFLOW>\n       <LINE>{l.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")}</LINE>\n      </RPY_DYFLOW>\n' if l.strip() else '      <RPY_DYFLOW/>\n' for l in flow)+'     </FLOW_LOGIC>\n'
+    x+='    </item>\n'
     return x
 S=('SCREEN','SCREEN')
 def label(text,line,col,length=None):
