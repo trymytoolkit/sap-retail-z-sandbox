@@ -13,7 +13,7 @@
       "Do": "tcode:/nZMM01",
       "Expect": [
         "tcode:ZMM01",
-        "screen:wnd[0]/usr/ctxtZRET_S_ART-ARTICLE_ID"
+        "screen:wnd[0]/usr/txtZRET_S_ART-ARTICLE_ID"
       ],
       "Choices": [
         {
@@ -24,10 +24,10 @@
     },
     "id": {
       "Question": "Article ${ART}.",
-      "ElementId": "wnd[0]/usr/ctxtZRET_S_ART-ARTICLE_ID",
+      "ElementId": "wnd[0]/usr/txtZRET_S_ART-ARTICLE_ID",
       "Do": "set:${ART}",
       "Expect": [
-        "value:wnd[0]/usr/ctxtZRET_S_ART-ARTICLE_ID=${ART}"
+        "value:wnd[0]/usr/txtZRET_S_ART-ARTICLE_ID=${ART}"
       ],
       "Choices": [
         {

@@ -7,3 +7,5 @@ Statut `MAIN` (statut d'écran) :
 Titre `T_MAIN` : « &1 » (le programme fournit « Créer article » ou « Modifier article X »).
 
 Dans SE41, activez bien les touches de fonction F3 / Shift+F3 / F12 / Ctrl+S sur les boutons correspondants : c'est ce que `key:F3`, `key:Ctrl+S` du scénario envoient.
+
+> Note abapGit : les fonctions Retour/Quitter/Annuler doivent porter `<TYPE>E</TYPE>` dans RSMPE_FUNT (type « exit command »), sinon elles passent par user_command au lieu de `MODULE exit AT EXIT-COMMAND` et F12 ne fait rien.

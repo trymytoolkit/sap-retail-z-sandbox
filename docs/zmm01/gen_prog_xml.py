@@ -94,7 +94,9 @@ s0230=screen('0230','ZMM01: variants (table control)','I',16,108,[
 # ---- CUA : status MAIN, title T_MAIN
 funs=[('SAVE','Save','ICON_SYSTEM_SAVE','@2L@'),('BACK','Back','',''),('EXIT','Exit','',''),('CANC','Cancel','ICON_CANCEL','@0W@'),('ENTER','Enter','','')]
 def funt(c,t,tn,ic):
-    x=f'     <RSMPE_FUNT>\n      <CODE>{c}</CODE>\n      <TEXTNO>001</TEXTNO>\n      <TEXT_TYPE>S</TEXT_TYPE>\n'
+    x=f'     <RSMPE_FUNT>\n      <CODE>{c}</CODE>\n      <TEXTNO>001</TEXTNO>\n'
+    if c in ('BACK','EXIT','CANC'): x+='      <TYPE>E</TYPE>\n'
+    x+='      <TEXT_TYPE>S</TEXT_TYPE>\n'
     if tn: x+=f'      <TEXT_NAME>{tn}</TEXT_NAME>\n      <ICON_ID>{ic}</ICON_ID>\n'
     return x+f'      <FUN_TEXT>{t}</FUN_TEXT>\n     </RSMPE_FUNT>\n'
 pfk=[('00','ENTER'),('03','BACK'),('11','SAVE'),('12','CANC'),('15','EXIT')]

@@ -826,18 +826,21 @@
      <RSMPE_FUNT>
       <CODE>BACK</CODE>
       <TEXTNO>001</TEXTNO>
+      <TYPE>E</TYPE>
       <TEXT_TYPE>S</TEXT_TYPE>
       <FUN_TEXT>Back</FUN_TEXT>
      </RSMPE_FUNT>
      <RSMPE_FUNT>
       <CODE>EXIT</CODE>
       <TEXTNO>001</TEXTNO>
+      <TYPE>E</TYPE>
       <TEXT_TYPE>S</TEXT_TYPE>
       <FUN_TEXT>Exit</FUN_TEXT>
      </RSMPE_FUNT>
      <RSMPE_FUNT>
       <CODE>CANC</CODE>
       <TEXTNO>001</TEXTNO>
+      <TYPE>E</TYPE>
       <TEXT_TYPE>S</TEXT_TYPE>
       <TEXT_NAME>ICON_CANCEL</TEXT_NAME>
       <ICON_ID>@0W@</ICON_ID>
