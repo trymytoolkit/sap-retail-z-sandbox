@@ -3,7 +3,7 @@
   "Category": "test",
   "Mode": "both",
   "Title": "ZMM01 · Créer un article avec deux variantes",
-  "Description": "Banc d'essai « écran standard » : onglets, sous-écrans, liste déroulante, table control, sauvegarde Ctrl+S. Attendu : message S « Article X sauvegardé (2 variante(s)) ».",
+  "Description": "Banc d'essai « écran standard » : onglets, sous-écrans, liste déroulante, table control, sauvegarde Ctrl+S. L'identifiant est neuf à chaque passage (A${UNIQ}) : comme en vrai, on ne recrée pas deux fois le même article. Attendu : message S « Article X sauvegardé (2 variante(s)) » ; le scénario suivant vérifie la table.",
   "Data": "zmm01-creation.csv",
   "Start": "open",
   "Steps": {

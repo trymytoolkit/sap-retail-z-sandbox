@@ -1,0 +1,149 @@
+{
+  "Id": "zmm01-verif-table",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZMM01 · Vérifier en table l'article créé (SE16)",
+  "Description": "Après la transaction, la preuve en base : SE16 sur ZRET_T_ARTICLE (nom, type, EAN d'en-tête) puis ZRET_T_ART_VAR (les deux variantes et leurs EAN). Utilise ${ARTSAVED} capturé par le scénario de création. Les valeurs attendues (nom, type, EAN) viennent de son propre CSV, à garder aligné sur zmm01-creation.csv.",
+  "Start": "se16",
+  "Steps": {
+    "se16": {
+      "Question": "Ouvrir SE16.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nSE16",
+      "Expect": [
+        "tcode:SE16",
+        "screen:wnd[0]/usr/ctxtDATABROWSE-TABLENAME"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "table"
+        }
+      ]
+    },
+    "table": {
+      "Question": "Table ZRET_T_ARTICLE.",
+      "ElementId": "wnd[0]/usr/ctxtDATABROWSE-TABLENAME",
+      "Do": "set:ZRET_T_ARTICLE",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "enter"
+        }
+      ]
+    },
+    "enter": {
+      "Question": "Entrée : écran de sélection.",
+      "Do": "key:Enter",
+      "Expect": [
+        "screen:wnd[0]/usr/txtI1-LOW"
+      ],
+      "Hint": "Si l'id du champ diffère, relevez-le avec le dump d'écran : sur SE16, les select-options s'appellent I1-LOW, I2-LOW… dans l'ordre des champs.",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "filtre"
+        }
+      ]
+    },
+    "filtre": {
+      "Question": "Article ${ARTSAVED}.",
+      "ElementId": "wnd[0]/usr/txtI1-LOW",
+      "Do": "set:${ARTSAVED}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "exec"
+        }
+      ]
+    },
+    "exec": {
+      "Question": "Exécuter (F8) : une ligne, avec le nom, le type et l'EAN d'en-tête.",
+      "Do": "key:F8",
+      "Expect": [
+        "text:${ARTSAVED}",
+        "text:${NOM}",
+        "text:${TYPE}",
+        "text:${EAN1}"
+      ],
+      "Hint": "L'EAN d'en-tête est recopié de la première variante à la sauvegarde ; s'il manque, c'est la sauvegarde ZMM01 qui n'a pas rempli ZRET_T_ARTICLE-EAN.",
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "var_table"
+        }
+      ]
+    },
+    "var_table": {
+      "Question": "Retour, table ZRET_T_ART_VAR.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nSE16",
+      "Expect": [
+        "tcode:SE16"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "var_name"
+        }
+      ]
+    },
+    "var_name": {
+      "Question": "Table ZRET_T_ART_VAR.",
+      "ElementId": "wnd[0]/usr/ctxtDATABROWSE-TABLENAME",
+      "Do": "set:ZRET_T_ART_VAR",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "var_enter"
+        }
+      ]
+    },
+    "var_enter": {
+      "Question": "Entrée.",
+      "Do": "key:Enter",
+      "Expect": [
+        "screen:wnd[0]/usr/txtI1-LOW"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "var_filtre"
+        }
+      ]
+    },
+    "var_filtre": {
+      "Question": "Article ${ARTSAVED}.",
+      "ElementId": "wnd[0]/usr/txtI1-LOW",
+      "Do": "set:${ARTSAVED}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "var_exec"
+        }
+      ]
+    },
+    "var_exec": {
+      "Question": "Exécuter (F8) : les deux variantes avec leurs EAN.",
+      "Do": "key:F8",
+      "Expect": [
+        "text:${V1}",
+        "text:${EAN1}",
+        "text:${V2}",
+        "text:${EAN2}"
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Article ${ARTSAVED} vérifié en base : en-tête et deux variantes conformes à la saisie."
+    }
+  },
+  "Data": "zmm01-verif-table.csv"
+}

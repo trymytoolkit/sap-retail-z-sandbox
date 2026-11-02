@@ -4,9 +4,10 @@
   "Domain": "Retail Z",
   "Category": "6 · ZMM01 banc d'essai",
   "Kind": "recette",
-  "Description": "Deux scénarios sur un module pool façon MM01 : création nominale avec variantes, puis refus attendu d'un EAN invalide.",
+  "Description": "Trois scénarios sur un module pool façon MM01 : création nominale d'un article neuf (A${UNIQ}) avec variantes, vérification en table (SE16), puis refus attendu d'un EAN invalide.",
   "Scenarios": [
     "zmm01-creation",
+    "zmm01-verif-table",
     "zmm01-ean-invalide"
   ],
   "StopOnFail": false

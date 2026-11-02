@@ -76,6 +76,15 @@ FORM save_article.
     APPEND ls_var TO lt_var.
   ENDLOOP.
   lv_n = lines( lt_var ).
+  " L'EAN de l'en-tête (colonne de ZRET_T_ARTICLE) : celui de la première
+  " variante qui en a un, sinon il reste vide. Sans variante, l'article
+  " n'a pas d'EAN propre dans ce modèle.
+  IF ls_art-ean IS INITIAL.
+    LOOP AT lt_var INTO ls_var WHERE ean IS NOT INITIAL.
+      ls_art-ean = ls_var-ean.
+      EXIT.
+    ENDLOOP.
+  ENDIF.
 
   MODIFY zret_t_article FROM ls_art.
   DELETE FROM zret_t_art_var WHERE article_id = ls_art-article_id.
