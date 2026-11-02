@@ -70,13 +70,13 @@ s0200=screen('0200','ZMM01: main screen (tabstrip)','N',24,120,[
  fld(*TS,'PUSH','TAB2','Sales',1,2,8,fcode='TAB2',ref='SUB_MAIN'),
  fld(*TS,'PUSH','TAB3','Variants',1,3,12,fcode='TAB3',ref='SUB_MAIN'), OK])
 # ---- 0210 subscreen basic data
-s0210=screen('0210','ZMM01: basic data','S',16,108,[],[
+s0210=screen('0210','ZMM01: basic data','I',16,108,[],[
  lab('Article name',2,1,20), tmpl('ZRET_S_ART-ARTICLE_NAME',2,24,40),
  lab('Article type',3,1,20), tmpl('ZRET_S_ART-ARTICLE_TYPE',3,24,4,vis=12,dd=True),
  lab('Base unit',4,1,20), tmpl('ZRET_S_ART-BASE_UOM',4,24,3,fmt='UNIT'),
  fld(*S,'CHECK','ZRET_S_ART-ACTIVE_FLAG','Active',5,24,8,io=True,fromdict=True)])
 # ---- 0220 subscreen sales
-s0220=screen('0220','ZMM01: sales data','S',16,108,[],[
+s0220=screen('0220','ZMM01: sales data','I',16,108,[],[
  lab('Price',2,1,20), tmpl('ZRET_S_ART-PRICE',2,24,17,fmt='DEC'),
  lab('Currency',3,1,20), tmpl('ZRET_S_ART-CURRENCY',3,24,5,fmt='CUKY'),
  lab('Generic article',4,1,20), tmpl('ZRET_S_ART-GENERIC_ARTICLE_ID',4,24,10)])
@@ -88,7 +88,7 @@ for i,(f,t,L,v) in enumerate(cols,1):
     tcfields.append(fld(*TC,'TEXT','H_'+f,t,1,i,v,v,tc_head=True))
 for i,(f,t,L,v) in enumerate(cols,1):
     tcfields.append(fld(*TC,'TEMPLATE','ZRET_S_ART_VAR-'+f,'_'*v,1,i,L,v,'DEC' if f=='PRICE' else 'CHAR',io=True,fromdict=True))
-s0230=screen('0230','ZMM01: variants (table control)','S',16,108,[
+s0230=screen('0230','ZMM01: variants (table control)','I',16,108,[
  cont('TABLE_CTRL','TC_VAR','SCREEN',1,1,100,8,resize=('X','X',3,10),scroll=('X','X'),tc=1)],
  tcfields+[fld(*S,'PUSH','BTN_ADD','Add line',10,1,14,fcode='ADD'), fld(*S,'PUSH','BTN_DEL','Delete line',10,17,16,fcode='DEL')])
 # ---- CUA : status MAIN, title T_MAIN
