@@ -1,0 +1,15 @@
+{
+  "Id": "zme23n-banc-essai",
+  "Title": "ZME23N : écran Enjoy (grille ALV éditable, en-tête repliable)",
+  "Domain": "Retail Z",
+  "Category": "7 · ZME23N banc d'essai",
+  "Kind": "recette",
+  "Description": "Quatre scénarios sur un écran façon ME23N : modification d'une quantité dans la grille ALV (cellset) avec contrôle et sauvegarde, drill-down vers le détail du poste, refus attendu d'une quantité sous le livré, commande inexistante.",
+  "Scenarios": [
+    "zme23n-modif-quantite",
+    "zme23n-drilldown",
+    "zme23n-echec-attendu",
+    "zme23n-inexistante"
+  ],
+  "StopOnFail": false
+}

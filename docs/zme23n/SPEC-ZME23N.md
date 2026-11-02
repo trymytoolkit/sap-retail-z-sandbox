@@ -39,3 +39,15 @@ Statut GUI `MAIN` : Sauvegarder `SAVE` (Ctrl+S), Retour `BACK` (F3), Quitter `EX
 - Écriture dans une cellule ALV : `cellset:GRILLE[COL=VAL].COL2=VALEUR` (GuiGridView.modifyCell(row, col, value) puis Enter).
 - Boutons de barre d'outils ALV : `toolbar:GRILLE=FCODE` (GuiGridView.pressToolbarButton).
 - Conteneur replié/déplié : par `press` sur le bouton, puis `screen:`/`gone:` sur un champ de l'en-tête, déjà possible.
+
+## Réalisé le 03/11/2026 (première version, générée par `gen_zme23n.py`)
+
+Périmètre retenu pour un premier aller-retour abapGit, en appliquant les leçons de ZMM01 (sous-écrans `TYPE I`, `CUST_CTRL` pour le custom container relevé sur RSDEMO_CUSTOM_CONTROL, `TYPE E` sur BACK/EXIT/CANC, `USING VALUE(...)`, contrôles dans la barre de statut) :
+
+- Objets : `ZRET_S_PO_HDR`, `ZRET_S_PO_ITEM_ALV` (sans CELLSTYLES : l'éditabilité est par colonne, les refus métier passent par Contrôler/Sauvegarder), transaction `ZME23N`, module pool `SAPMZRET_PO` avec includes TOP/O01/I01/F01.
+- Écran 0100 : champ commande, boutons Autre / Afficher↔Modifier / En-tête / Contrôler, sous-écran `SUB_HDR` (0110 déplié, 0111 replié), custom container `CC_ITEMS` (grille `cl_gui_alv_grid`, boutons ADD_ITEM / DEL_ITEM / DETAIL ajoutés par l'événement toolbar, double-clic → détail), sous-écran `SUB_ITEM` (0120 : tabstrip `TS_ITEM`, onglets 0121 données du poste et 0122 livraison).
+- Pas d'arbre de sélection `CC_TREE` dans cette version (candidat pour la suite).
+- Contrôles : quantité et prix > 0, quantité ≥ livré, article connu ; statut C/D/X → modification refusée ; messages en français dans la barre de statut, lisibles par `status:` / `statustype:`.
+- Moteur MyToolKit 1.6.3 : `cellset:GRILLE[COL=VAL].COL2=VALEUR` (ModifyCell + PressEnter) et `toolbar:GRILLE=FCODE` ajoutés, interdits en campagne de contrôle.
+- Campagne « 7 · ZME23N banc d'essai » : modif-quantite (PO 1, poste 2 → 55, contrôle, sauvegarde, capture du total), drilldown (poste 1, onglet Livraison), echec-attendu (poste 1 livré 50 → quantité 10 refusée au contrôle, puis F12/Oui), inexistante.
+- Ids supposés, à confirmer au premier lancement : `wnd[0]/usr/subSUB_HDR:SAPMZRET_PO:0110/txt…`, `wnd[0]/usr/subSUB_ITEM:SAPMZRET_PO:0120/tabsTS_ITEM/tabpTABI1/ssubSUB_TAB:SAPMZRET_PO:0121/txt…`, grille `auto:grid`.

@@ -1,0 +1,53 @@
+{
+  "Id": "zme23n-inexistante",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZME23N · Échec attendu : commande inexistante",
+  "Description": "Saisir un numéro qui n'existe pas : message E « Commande X inexistante ».",
+  "Data": "zme23n-inexistante.csv",
+  "Start": "open",
+  "Steps": {
+    "open": {
+      "Question": "Ouvrir ZME23N.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nZME23N",
+      "Expect": [
+        "tcode:ZME23N"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "po"
+        }
+      ]
+    },
+    "po": {
+      "Question": "Commande ${PO}.",
+      "ElementId": "wnd[0]/usr/txtZRET_S_PO_HDR-PO_NUMBER",
+      "Do": "set:${PO}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "load"
+        }
+      ]
+    },
+    "load": {
+      "Question": "Entrée : refus attendu.",
+      "Do": "key:Enter",
+      "Expect": [
+        "statustype:E",
+        "status:inexistante"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Commande ${PO} bien signalée inexistante."
+    }
+  }
+}

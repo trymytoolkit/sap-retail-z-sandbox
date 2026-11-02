@@ -1,0 +1,84 @@
+{
+  "Id": "zme23n-drilldown",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZME23N · Drill-down d'un poste et onglet Livraison",
+  "Description": "Double-clic sur le poste ${POSTE} de la grille : le détail sous la grille affiche l'article ; l'onglet Livraison montre la quantité livrée. Lecture seule.",
+  "Data": "zme23n-drilldown.csv",
+  "Start": "open",
+  "Steps": {
+    "open": {
+      "Question": "Ouvrir ZME23N.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nZME23N",
+      "Expect": [
+        "tcode:ZME23N"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "po"
+        }
+      ]
+    },
+    "po": {
+      "Question": "Commande ${PO}.",
+      "ElementId": "wnd[0]/usr/txtZRET_S_PO_HDR-PO_NUMBER",
+      "Do": "set:${PO}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "load"
+        }
+      ]
+    },
+    "load": {
+      "Question": "Entrée.",
+      "Do": "key:Enter",
+      "Expect": [
+        "status:chargée",
+        "rowcount:auto:grid>=1"
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "dbl"
+        }
+      ]
+    },
+    "dbl": {
+      "Question": "Double-clic sur le poste ${POSTE}.",
+      "Do": "dblclick:auto:grid[ITEM_NUM=${POSTE}]",
+      "Expect": [
+        "value:wnd[0]/usr/subSUB_ITEM:SAPMZRET_PO:0120/tabsTS_ITEM/tabpTABI1/ssubSUB_TAB:SAPMZRET_PO:0121/txtZRET_S_PO_ITEM_ALV-ITEM_NUM=${POSTE}",
+        "capture:ART=wnd[0]/usr/subSUB_ITEM:SAPMZRET_PO:0120/tabsTS_ITEM/tabpTABI1/ssubSUB_TAB:SAPMZRET_PO:0121/txtZRET_S_PO_ITEM_ALV-ARTICLE_ID"
+      ],
+      "Hint": "Si un id diffère, le dump d'écran écrit à l'échec (fichier _ecran.txt du dossier d'exécution) donne les vrais : sous-écran = subNOM:PROG:DYNPRO, grille = auto:grid.",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "tab2"
+        }
+      ]
+    },
+    "tab2": {
+      "Question": "Onglet Livraison.",
+      "ElementId": "wnd[0]/usr/subSUB_ITEM:SAPMZRET_PO:0120/tabsTS_ITEM/tabpTABI2",
+      "Do": "press",
+      "Expect": [
+        "screen:wnd[0]/usr/subSUB_ITEM:SAPMZRET_PO:0120/tabsTS_ITEM/tabpTABI2/ssubSUB_TAB:SAPMZRET_PO:0122/txtZRET_S_PO_ITEM_ALV-DELIVERED_QTY",
+        "capture:LIVRE=wnd[0]/usr/subSUB_ITEM:SAPMZRET_PO:0120/tabsTS_ITEM/tabpTABI2/ssubSUB_TAB:SAPMZRET_PO:0122/txtZRET_S_PO_ITEM_ALV-DELIVERED_QTY"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Poste ${POSTE} : article ${ART}, livré ${LIVRE}."
+    }
+  }
+}

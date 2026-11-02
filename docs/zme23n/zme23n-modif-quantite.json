@@ -1,0 +1,161 @@
+{
+  "Id": "zme23n-modif-quantite",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZME23N · Modifier la quantité d'un poste dans la grille ALV",
+  "Description": "Écran « Enjoy » : en-tête repliable, postes dans une grille ALV éditable, détail sous la grille. Charge la commande ${PO}, passe en Modifier, écrit QUANTITY=${QTE} dans la cellule du poste ${POSTE} (cellset), contrôle, sauvegarde, capture le total.",
+  "Data": "zme23n-modif-quantite.csv",
+  "Start": "open",
+  "Steps": {
+    "open": {
+      "Question": "Ouvrir ZME23N.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nZME23N",
+      "Expect": [
+        "tcode:ZME23N",
+        "screen:wnd[0]/usr/txtZRET_S_PO_HDR-PO_NUMBER"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "po"
+        }
+      ]
+    },
+    "po": {
+      "Question": "Commande ${PO}.",
+      "ElementId": "wnd[0]/usr/txtZRET_S_PO_HDR-PO_NUMBER",
+      "Do": "set:${PO}",
+      "Expect": [
+        "value:wnd[0]/usr/txtZRET_S_PO_HDR-PO_NUMBER=${PO}"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "load"
+        }
+      ]
+    },
+    "load": {
+      "Question": "Entrée : en-tête et postes chargés.",
+      "Do": "key:Enter",
+      "Expect": [
+        "status:chargée",
+        "screen:wnd[0]/usr/subSUB_HDR:SAPMZRET_PO:0110/txtZRET_S_PO_HDR-SUPPLIER_ID",
+        "rowcount:auto:grid>=1"
+      ],
+      "Hint": "Si un id diffère, le dump d'écran écrit à l'échec (fichier _ecran.txt du dossier d'exécution) donne les vrais : sous-écran = subNOM:PROG:DYNPRO, grille = auto:grid.",
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "capture_sup"
+        }
+      ]
+    },
+    "capture_sup": {
+      "Question": "Relever le fournisseur et la quantité actuelle du poste ${POSTE}.",
+      "Do": "wait:200",
+      "Expect": [
+        "capture:SUPPLIER=wnd[0]/usr/subSUB_HDR:SAPMZRET_PO:0110/txtZRET_S_PO_HDR-SUPPLIER_ID",
+        "capture:QTE_AVANT=auto:grid[ITEM_NUM=${POSTE}].QUANTITY"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "edit"
+        }
+      ]
+    },
+    "edit": {
+      "Question": "Afficher ↔ Modifier.",
+      "ElementId": "wnd[0]/usr/btnBTN_EDIT",
+      "Do": "press",
+      "Expect": [
+        "noerror:"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "hdr_close"
+        }
+      ]
+    },
+    "hdr_close": {
+      "Question": "Replier l'en-tête : les champs disparaissent.",
+      "ElementId": "wnd[0]/usr/btnBTN_HDR",
+      "Do": "press",
+      "Expect": [
+        "gone:wnd[0]/usr/subSUB_HDR:SAPMZRET_PO:0110/txtZRET_S_PO_HDR-SUPPLIER_ID"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "hdr_open"
+        }
+      ]
+    },
+    "hdr_open": {
+      "Question": "Déplier l'en-tête.",
+      "ElementId": "wnd[0]/usr/btnBTN_HDR",
+      "Do": "press",
+      "Expect": [
+        "screen:wnd[0]/usr/subSUB_HDR:SAPMZRET_PO:0110/txtZRET_S_PO_HDR-SUPPLIER_ID"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "qty"
+        }
+      ]
+    },
+    "qty": {
+      "Question": "Quantité ${QTE} sur le poste ${POSTE} (cellule ALV).",
+      "Do": "cellset:auto:grid[ITEM_NUM=${POSTE}].QUANTITY=${QTE}",
+      "Expect": [
+        "cell:auto:grid[ITEM_NUM=${POSTE}].QUANTITY=${QTE}"
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "check"
+        }
+      ]
+    },
+    "check": {
+      "Question": "Contrôler (bouton Check) : aucune erreur.",
+      "ElementId": "wnd[0]/usr/btnBTN_CHECK",
+      "Do": "press",
+      "Expect": [
+        "statustype:S",
+        "status:aucune erreur"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "save"
+        }
+      ]
+    },
+    "save": {
+      "Question": "Sauvegarder (Ctrl+S).",
+      "Do": "key:Ctrl+S",
+      "Expect": [
+        "statustype:S",
+        "status:modifiée",
+        "capture:TOTAL=sbar#total (\\S+) "
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Commande ${PO} : poste ${POSTE} passé de ${QTE_AVANT} à ${QTE}, total ${TOTAL}, fournisseur ${SUPPLIER}."
+    }
+  }
+}

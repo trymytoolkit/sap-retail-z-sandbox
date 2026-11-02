@@ -1,0 +1,125 @@
+{
+  "Id": "zme23n-echec-attendu",
+  "Category": "test",
+  "Mode": "both",
+  "Title": "ZME23N · Échec attendu : quantité sous le livré refusée au contrôle",
+  "Description": "Sur le poste ${POSTE} déjà livré (50), écrire une quantité ${QTE} inférieure au livré puis Contrôler : message E « quantité inférieure au livré ». Rien n'est sauvegardé ; Annuler puis Oui pour quitter sans sauver.",
+  "Data": "zme23n-echec-attendu.csv",
+  "Start": "open",
+  "Steps": {
+    "open": {
+      "Question": "Ouvrir ZME23N.",
+      "ElementId": "auto:okcode",
+      "Do": "tcode:/nZME23N",
+      "Expect": [
+        "tcode:ZME23N"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "po"
+        }
+      ]
+    },
+    "po": {
+      "Question": "Commande ${PO}.",
+      "ElementId": "wnd[0]/usr/txtZRET_S_PO_HDR-PO_NUMBER",
+      "Do": "set:${PO}",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "load"
+        }
+      ]
+    },
+    "load": {
+      "Question": "Entrée.",
+      "Do": "key:Enter",
+      "Expect": [
+        "status:chargée",
+        "rowcount:auto:grid>=1"
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "edit"
+        }
+      ]
+    },
+    "edit": {
+      "Question": "Afficher ↔ Modifier.",
+      "ElementId": "wnd[0]/usr/btnBTN_EDIT",
+      "Do": "press",
+      "Expect": [
+        "noerror:"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "qty"
+        }
+      ]
+    },
+    "qty": {
+      "Question": "Quantité ${QTE} sur le poste ${POSTE} (livré 50).",
+      "Do": "cellset:auto:grid[ITEM_NUM=${POSTE}].QUANTITY=${QTE}",
+      "Expect": [
+        "cell:auto:grid[ITEM_NUM=${POSTE}].QUANTITY=${QTE}"
+      ],
+      "TimeoutMs": 15000,
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "check"
+        }
+      ]
+    },
+    "check": {
+      "Question": "Contrôler : refus attendu.",
+      "ElementId": "wnd[0]/usr/btnBTN_CHECK",
+      "Do": "press",
+      "Expect": [
+        "statustype:E",
+        "status:inférieure au livré"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "cancel"
+        }
+      ]
+    },
+    "cancel": {
+      "Question": "Annuler (F12) : popup Quitter.",
+      "Do": "key:F12",
+      "Expect": [
+        "popup:Quitter"
+      ],
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "yes"
+        }
+      ]
+    },
+    "yes": {
+      "Question": "Oui : retour sans sauvegarde.",
+      "ElementId": "wnd[1]/usr/btnBUTTON_1",
+      "Do": "press",
+      "Expect": [
+        "tcode:SESSION_MANAGER"
+      ],
+      "Hint": "Si la transaction de retour diffère (menu SAP), remplacez par la condition tcode: adaptée ou par gone: sur le champ Commande.",
+      "Choices": [
+        {
+          "Label": "Suivant",
+          "Next": "fin"
+        }
+      ]
+    },
+    "fin": {
+      "Conclusion": "Le contrôle a bien refusé une quantité sous le livré sur ${PO}/${POSTE}, et rien n'a été sauvegardé."
+    }
+  }
+}
