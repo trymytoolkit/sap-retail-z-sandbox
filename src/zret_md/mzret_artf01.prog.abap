@@ -1,7 +1,7 @@
 *&---------------------------------------------------------------------*
 *& Include MZRET_ARTF01 : formes
 *&---------------------------------------------------------------------*
-FORM load_article USING iv_id TYPE zret_t_article-article_id.
+FORM load_article USING VALUE(iv_id) TYPE zret_t_article-article_id.
   CLEAR: gs_art_db, gt_var, gv_exists.
   SELECT SINGLE * FROM zret_t_article INTO gs_art_db WHERE article_id = iv_id.
   IF sy-subrc = 0.
