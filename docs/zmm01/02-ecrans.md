@@ -83,3 +83,5 @@ Identifiants que verra MyToolKit (à confirmer avec « Voir les éléments de l'
 > Note abapGit : dans l'en-tête RPY_DYHEAD, un écran normal porte `TYPE N` et un **sous-écran porte `TYPE I`** (pas `S`). Avec `S`, abapGit crée l'objet sans erreur visible mais le dynpro n'est jamais généré (DYNPRO_NOT_FOUND à l'exécution).
 
 > Unité de base : valeur interne 'ST' (affichée PC en anglais via l'exit de conversion CUNIT). 'PC' en interne n'existe pas et bloque la saisie (Unit *** is not created).
+
+> Ids relevés sur A4H (dump MTK) : écran initial `wnd[0]/usr/txtZRET_S_ART-ARTICLE_ID` ; onglets `wnd[0]/usr/tabsTS_MAIN/tabpTAB1..3` ; sous-écrans `ssubSUB_MAIN:SAPMZRET_ART:0210/0220/0230` ; liste `cmbZRET_S_ART-ARTICLE_TYPE` ; table control `tblSAPMZRET_ARTTC_VAR/txtZRET_S_ART_VAR-<COL>[col,row]` (VARIANT_ID=0, COLOR=1, SIZE_CODE=2, EAN=3, PRICE=4) ; popup POPUP_TO_CONFIRM (SAPLSPO1 0502, rendu HTML) : boutons `wnd[1]/usr/btnBUTTON_1` (Oui) et `btnBUTTON_2` (Non).

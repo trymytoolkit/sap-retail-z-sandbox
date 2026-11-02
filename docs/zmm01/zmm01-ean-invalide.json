@@ -202,11 +202,11 @@
     },
     "yes": {
       "Question": "Oui.",
-      "ElementId": "wnd[1]/usr/btnSPOP-OPTION1",
+      "ElementId": "wnd[1]/usr/btnBUTTON_1",
       "Do": "press",
       "Expect": [
-        "nopopup",
-        "screen:wnd[0]/usr/txtZRET_S_ART-ARTICLE_ID"
+        "screen:wnd[0]/usr/txtZRET_S_ART-ARTICLE_ID",
+        "tcode:ZMM01"
       ],
       "Choices": [
         {

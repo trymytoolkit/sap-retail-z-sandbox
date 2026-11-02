@@ -12,3 +12,7 @@ Ordre de création dans SAP (mandant 001, package ZRET_MD) :
 7. Scénarios MyToolKit : `zmm01-creation.json` et `zmm01-ean-invalide.json` (copier dans Mes guides, ou dans runbooks-defaults).
 
 Les noms de champs, de sous-écrans et du table control sont ceux que les scénarios attendent : ne les changez pas sans changer les scénarios.
+
+## État au 02/11/2026
+
+Importé et activé sur A4H via abapGit (transport A4HK900110). Testé à la main (création ART900 avec une variante) puis par l'Automate : campagne « 6 · ZMM01 banc d'essai » 2/2 (création 15/15, EAN invalide 17/17). Pièges rencontrés et corrigés, utiles pour ZME23N/ZMIGO : sous-écrans `TYPE I` dans l'en-tête abapGit ; unité interne `ST` (pas `PC`) ; contrôles PAI dans un `CHAIN … ENDCHAIN` et seulement sur SAVE ; zone de transport du table control déclarée en `TABLES` ; `USING VALUE(...)` quand le FORM efface la structure passée ; `TYPE E` sur BACK/EXIT/CANC du statut GUI ; boutons du POPUP_TO_CONFIRM = `wnd[1]/usr/btnBUTTON_1/2`.
