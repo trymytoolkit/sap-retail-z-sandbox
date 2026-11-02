@@ -462,7 +462,7 @@ FORM recalc_header.
   ENDLOOP.
 ENDFORM.
 
-FORM show_detail USING iv_index TYPE i.
+FORM show_detail USING VALUE(iv_index) TYPE i.
   READ TABLE gt_items INTO zret_s_po_item_alv INDEX iv_index.
   IF sy-subrc <> 0.
     MESSAGE 'Sélectionnez un poste'(e04) TYPE 'S' DISPLAY LIKE 'E'.
@@ -681,7 +681,7 @@ s0121 = screen('0121', 'ZME23N: item data', 'I', 6, 112, [], [
 s0122 = screen('0122', 'ZME23N: item delivery', 'I', 6, 112, [], [
     lab('Delivered', 1, 1, 14), tmpl('ZRET_S_PO_ITEM_ALV-DELIVERED_QTY', 1, 16, 17, fmt='DEC', out=True),
     lab('Open quantity', 2, 1, 14), tmpl('ZRET_S_PO_ITEM_ALV-OPEN_QTY', 2, 16, 17, fmt='DEC', out=True),
-    fld(*S, 'CHECK', 'ZRET_S_PO_ITEM_ALV-FINAL_DELIVERY', 'Final delivery', 3, 16, 16, io=True, fromdict=True, group='EDT')])
+    fld(*S, 'CHECK', 'ZRET_S_PO_ITEM_ALV-FINAL_DELIVERY', 'Final', 3, 16, 7, io=True, fromdict=True, group='EDT')])
 
 # ---------------------------------------------------------------- CUA
 funs = [('SAVE', 'Save', 'ICON_SYSTEM_SAVE', '@2L@'), ('BACK', 'Back', '', ''), ('EXIT', 'Exit', '', ''),

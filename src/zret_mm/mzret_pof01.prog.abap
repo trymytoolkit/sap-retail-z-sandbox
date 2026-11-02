@@ -237,7 +237,7 @@ FORM recalc_header.
   ENDLOOP.
 ENDFORM.
 
-FORM show_detail USING iv_index TYPE i.
+FORM show_detail USING VALUE(iv_index) TYPE i.
   READ TABLE gt_items INTO zret_s_po_item_alv INDEX iv_index.
   IF sy-subrc <> 0.
     MESSAGE 'Sélectionnez un poste'(e04) TYPE 'S' DISPLAY LIKE 'E'.
